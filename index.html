@@ -772,8 +772,6 @@ transform:
 translate(-50%,-50%) !important;
 cursor:default;
 transition:
-width .45s ease,
-height .45s ease,
 transform .45s ease,
 opacity .45s ease;
 }
@@ -1019,13 +1017,19 @@ margin-bottom:30px;
 }
 
 .flash-card.focused{
-width:88vw;
-height:78vh;
+position:fixed !important;
+top:50% !important;
+left:50% !important;
+width:var(--mobile-card-width) !important;
+height:var(--mobile-card-height) !important;
+max-width:none !important;
+max-height:none !important;
+margin:0 !important;
+transform:translate(-50%,-50%) !important;
 }
 
 .flash-card.focused:hover{
-transform:
-translate(-50%,-50%) !important;
+transform:translate(-50%,-50%) !important;
 }
 
 .back-btn,
@@ -1042,13 +1046,19 @@ margin-bottom:30px;
 }
 
 .flash-card.focused{
-width:88vw;
-height:78vh;
+position:fixed !important;
+top:50% !important;
+left:50% !important;
+width:var(--mobile-card-width) !important;
+height:var(--mobile-card-height) !important;
+max-width:none !important;
+max-height:none !important;
+margin:0 !important;
+transform:translate(-50%,-50%) !important;
 }
 
 .flash-card.focused:hover{
-transform:
-translate(-50%,-50%) !important;
+transform:translate(-50%,-50%) !important;
 }
 
 .back-btn,
@@ -1432,6 +1442,10 @@ if(card.classList.contains("focused"))return;
 
 if(isMobile()){
 
+const rect=card.getBoundingClientRect();
+card.style.setProperty("--mobile-card-width",rect.width+"px");
+card.style.setProperty("--mobile-card-height",rect.height+"px");
+
 showMobileAnswer(card);
 
 saveCardState(card);
@@ -1476,6 +1490,8 @@ document.body.style.overflow="";
 
 setTimeout(function(){
 card.classList.add("completed");
+card.style.removeProperty("--mobile-card-width");
+card.style.removeProperty("--mobile-card-height");
 saveCardState(card);
 },450);
 }
@@ -1561,6 +1577,9 @@ card.classList.remove(
 "flipped",
 "mobile-answer"
 );
+
+card.style.removeProperty("--mobile-card-width");
+card.style.removeProperty("--mobile-card-height");
 
 
 card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap){
