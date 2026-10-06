@@ -764,7 +764,7 @@ translateY(0);
 position:fixed;
 top:50%;
 left:50%;
-width:min(560px,82vw);
+width:min(400px,82vw);
 height:min(620px,78vh);
 z-index:1000;
 margin:0;
@@ -944,24 +944,20 @@ perspective:none !important;
 }
 
 /*
-   MOBILE USES TWO COMPLETELY SEPARATE CARD FACES.
-   There is NO 3D parent and NO overlapping front/back planes.
+   MOBILE DOES NOT USE THE 3D FLIP SYSTEM.
+   The original card structure stays untouched.
+   Only one face is rendered at a time.
 */
 
-.flash-card.mobile-separated{
-isolation:isolate !important;
-contain:layout paint !important;
-overflow:hidden !important;
-}
-
-.flash-card.mobile-separated .card-inner{
-display:contents !important;
+.flash-card .card-inner{
 transform:none !important;
 -webkit-transform:none !important;
+transform-style:flat !important;
+-webkit-transform-style:flat !important;
 }
 
-.flash-card.mobile-separated .card-front,
-.flash-card.mobile-separated .card-back{
+.flash-card .card-front,
+.flash-card .card-back{
 position:absolute !important;
 inset:0 !important;
 width:100% !important;
@@ -972,63 +968,46 @@ backface-visibility:visible !important;
 -webkit-backface-visibility:visible !important;
 }
 
-.flash-card.mobile-separated .card-front{
+.flash-card .card-front{
 display:flex !important;
-z-index:1 !important;
-opacity:1 !important;
 visibility:visible !important;
-pointer-events:auto !important;
+opacity:1 !important;
+z-index:2 !important;
 }
 
-.flash-card.mobile-separated .card-back{
+.flash-card .card-back{
 display:none !important;
-z-index:3 !important;
-opacity:1 !important;
-visibility:visible !important;
-pointer-events:none !important;
+visibility:hidden !important;
+opacity:0 !important;
+z-index:1 !important;
 }
 
-/* Opaque shield between the two mobile faces. */
-.mobile-face-barrier{
-position:absolute;
-inset:0;
-z-index:2;
-pointer-events:none;
-display:none;
-background:var(--green-dark);
-border-radius:28px;
-}
-
-.flash-card.mobile-separated.mobile-answer .card-front{
+.flash-card.mobile-answer .card-front{
 display:none !important;
 visibility:hidden !important;
 opacity:0 !important;
 pointer-events:none !important;
-z-index:1 !important;
--webkit-transform:none !important;
-transform:none !important;
 }
 
-.flash-card.mobile-separated.mobile-answer .card-back{
+.flash-card.mobile-answer .card-back{
 display:flex !important;
-pointer-events:auto !important;
 visibility:visible !important;
 opacity:1 !important;
 z-index:3 !important;
--webkit-transform:none !important;
+pointer-events:auto !important;
 transform:none !important;
+-webkit-transform:none !important;
 }
 
-.flash-card.mobile-separated.mobile-answer .mobile-face-barrier{
-display:block !important;
-z-index:2 !important;
-opacity:1 !important;
-visibility:visible !important;
-pointer-events:none !important;
+.flash-card.mobile-answer .card-inner{
+transform:none !important;
+-webkit-transform:none !important;
+transform-style:flat !important;
+-webkit-transform-style:flat !important;
 }
 
-/* Compact answer card: keep the separated face inside the same card box. */
-.flash-card.mobile-separated.mobile-answer.focused .card-back{
+/* Keep the answer face fully inside the focused mobile card. */
+.flash-card.mobile-answer.focused .card-back{
 position:absolute !important;
 inset:0 !important;
 width:100% !important;
@@ -1036,14 +1015,14 @@ height:100% !important;
 min-height:0 !important;
 }
 
-.flash-card.mobile-separated.mobile-answer.focused .answer-content{
+.flash-card.mobile-answer.focused .answer-content{
 width:100% !important;
 height:100% !important;
 min-height:0 !important;
 padding:20px 10px 72px !important;
 }
 
-.flash-card.mobile-separated .done-button{
+.flash-card .done-button{
 pointer-events:auto !important;
 z-index:99999 !important;
 }
@@ -1402,30 +1381,8 @@ localStorage.setItem(STATE_KEY,JSON.stringify(savedState));
 }
 
 function prepareMobileCards(){
-if(!isMobile())return;
-
-cards.forEach(function(card){
-if(card.classList.contains("mobile-separated"))return;
-
-const inner=card.querySelector(".card-inner");
-if(!inner)return;
-
-const front=inner.querySelector(".card-front");
-const back=inner.querySelector(".card-back");
-
-if(!front||!back)return;
-
-const barrier=document.createElement("div");
-barrier.className="mobile-face-barrier";
-
-card.appendChild(front);
-card.appendChild(barrier);
-card.appendChild(back);
-inner.remove();
-
-card.classList.add("mobile-separated");
-}
-);
+/* Mobile keeps the original card DOM.
+   CSS alone switches between the two faces. */
 }
 
 function showMobileAnswer(card){
@@ -1606,31 +1563,8 @@ window.location.href="../index.html";
 
 
 function restoreDesktopCards(){
-if(isMobile())return;
-
-cards.forEach(function(card){
-if(!card.classList.contains("mobile-separated"))return;
-
-const front=card.querySelector(".card-front");
-const back=card.querySelector(".card-back");
-const barrier=card.querySelector(".mobile-face-barrier");
-
-if(!front||!back)return;
-
-const inner=document.createElement("div");
-inner.className="card-inner";
-
-inner.appendChild(front);
-inner.appendChild(back);
-card.insertBefore(inner,card.firstChild);
-
-if(barrier)barrier.remove();
-
-card.classList.remove(
-"mobile-separated",
-"mobile-answer"
-);
-});
+/* Nothing is moved between mobile and desktop.
+   The original desktop DOM is preserved at all times. */
 }
 
 function restoreCardStates(){
@@ -1733,18 +1667,11 @@ resetButton.addEventListener("click",resetCards);
 
 
 function handleViewportChange(){
-if(isMobile()){
-prepareMobileCards();
-}else{
-restoreDesktopCards();
-}
-
 restoreCardStates();
 }
 
 window.addEventListener("resize",handleViewportChange);
 
-prepareMobileCards();
 restoreCardStates();
 
 </script>
