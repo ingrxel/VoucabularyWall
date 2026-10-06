@@ -993,20 +993,29 @@ display:none;
 
 .flash-card.mobile-separated.mobile-answer .card-front{
 display:none !important;
-pointer-events:none !important;
 visibility:hidden !important;
+opacity:0 !important;
+pointer-events:none !important;
+z-index:1 !important;
+-webkit-transform:none !important;
+transform:none !important;
 }
 
 .flash-card.mobile-separated.mobile-answer .card-back{
 display:flex !important;
 pointer-events:auto !important;
 visibility:visible !important;
+opacity:1 !important;
 z-index:3 !important;
+-webkit-transform:none !important;
+transform:none !important;
 }
 
 .flash-card.mobile-separated.mobile-answer .mobile-face-barrier{
 display:block !important;
 z-index:2 !important;
+opacity:1 !important;
+pointer-events:none !important;
 }
 
 /* Compact answer card: keep the separated face inside the same card box. */
@@ -1029,35 +1038,6 @@ padding:20px 10px 72px !important;
 .flash-card.mobile-separated .done-button{
 pointer-events:auto !important;
 z-index:99999 !important;
-}
-
-.intro{
-margin-bottom:30px;
-}
-
-.flash-card.focused{
-position:fixed !important;
-top:50% !important;
-left:50% !important;
-width:min(340px,82vw) !important;
-height:280px !important;
-max-width:340px !important;
-max-height:280px !important;
-margin:0 !important;
-transform:translate(-50%,-50%) !important;
-transition:transform .45s ease, opacity .45s ease !important;
-}
-
-.flash-card.focused:hover{
-transform:translate(-50%,-50%) !important;
-}
-
-
-.back-btn,
-.reset-btn{
-padding:
-10px 14px;
-font-size:11px;
 }
 
 }
