@@ -772,6 +772,8 @@ transform:
 translate(-50%,-50%) !important;
 cursor:default;
 transition:
+width .45s ease,
+height .45s ease,
 transform .45s ease,
 opacity .45s ease;
 }
@@ -1007,6 +1009,23 @@ display:block !important;
 z-index:2 !important;
 }
 
+/* Compact answer card: keep the separated face inside the same card box. */
+.flash-card.mobile-separated.mobile-answer.focused .card-back{
+position:absolute !important;
+inset:0 !important;
+width:100% !important;
+height:100% !important;
+min-height:0 !important;
+}
+
+.flash-card.mobile-separated.mobile-answer.focused .answer-content{
+width:100% !important;
+height:100% !important;
+min-height:0 !important;
+padding:20px 10px 72px !important;
+}
+
+
 .flash-card.mobile-separated .done-button{
 pointer-events:auto !important;
 z-index:99999 !important;
@@ -1020,17 +1039,19 @@ margin-bottom:30px;
 position:fixed !important;
 top:50% !important;
 left:50% !important;
-width:var(--mobile-card-width) !important;
-height:var(--mobile-card-height) !important;
-max-width:none !important;
-max-height:none !important;
+width:min(340px,82vw) !important;
+height:280px !important;
+max-width:340px !important;
+max-height:280px !important;
 margin:0 !important;
 transform:translate(-50%,-50%) !important;
+transition:transform .45s ease, opacity .45s ease !important;
 }
 
 .flash-card.focused:hover{
 transform:translate(-50%,-50%) !important;
 }
+
 
 .back-btn,
 .reset-btn{
@@ -1049,17 +1070,19 @@ margin-bottom:30px;
 position:fixed !important;
 top:50% !important;
 left:50% !important;
-width:var(--mobile-card-width) !important;
-height:var(--mobile-card-height) !important;
-max-width:none !important;
-max-height:none !important;
+width:min(340px,82vw) !important;
+height:280px !important;
+max-width:340px !important;
+max-height:280px !important;
 margin:0 !important;
 transform:translate(-50%,-50%) !important;
+transition:transform .45s ease, opacity .45s ease !important;
 }
 
 .flash-card.focused:hover{
 transform:translate(-50%,-50%) !important;
 }
+
 
 .back-btn,
 .reset-btn{
@@ -1442,10 +1465,6 @@ if(card.classList.contains("focused"))return;
 
 if(isMobile()){
 
-const rect=card.getBoundingClientRect();
-card.style.setProperty("--mobile-card-width",rect.width+"px");
-card.style.setProperty("--mobile-card-height",rect.height+"px");
-
 showMobileAnswer(card);
 
 saveCardState(card);
@@ -1490,8 +1509,6 @@ document.body.style.overflow="";
 
 setTimeout(function(){
 card.classList.add("completed");
-card.style.removeProperty("--mobile-card-width");
-card.style.removeProperty("--mobile-card-height");
 saveCardState(card);
 },450);
 }
@@ -1577,9 +1594,6 @@ card.classList.remove(
 "flipped",
 "mobile-answer"
 );
-
-card.style.removeProperty("--mobile-card-width");
-card.style.removeProperty("--mobile-card-height");
 
 
 card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap){
