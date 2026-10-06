@@ -1014,6 +1014,47 @@ transform:none !important;
 pointer-events:auto !important;
 z-index:99999 !important;
 }
+.mobile-answer-layer{
+display:none;
+}
+
+.flash-card.mobile-answer .card-inner{
+display:none !important;
+}
+
+.flash-card.mobile-answer .mobile-answer-layer{
+display:flex !important;
+position:absolute !important;
+inset:0 !important;
+width:100% !important;
+height:100% !important;
+z-index:20 !important;
+border-radius:28px;
+overflow:hidden;
+background:var(--green-dark);
+box-shadow:
+0 15px 35px rgba(7,91,70,.12),
+0 4px 12px rgba(7,91,70,.06);
+}
+
+.mobile-answer-layer .answer-content{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+width:100%;
+height:100%;
+padding:40px;
+text-align:center;
+position:relative;
+z-index:2;
+}
+
+.mobile-answer-layer .done-button{
+z-index:99999;
+pointer-events:auto !important;
+}
+
 .intro{
 margin-bottom:30px;
 }
@@ -1021,15 +1062,11 @@ margin-bottom:30px;
 .flash-card.focused{
 width:88vw;
 height:78vh;
-top:11vh;
-left:6vw;
-transform:none !important;
--webkit-transform:none !important;
 }
 
 .flash-card.focused:hover{
-transform:none !important;
--webkit-transform:none !important;
+transform:
+translate(-50%,-50%) !important;
 }
 
 .back-btn,
@@ -1365,14 +1402,54 @@ return cover.classList.contains("revealed");
 localStorage.setItem(STATE_KEY,JSON.stringify(savedState));
 }
 
+function showMobileAnswer(card){
+if(!card)return;
+
+let layer=card.querySelector(".mobile-answer-layer");
+
+if(!layer){
+layer=document.createElement("div");
+layer.className="mobile-answer-layer";
+
+const source=card.querySelector(".card-back .answer-content");
+
+if(source){
+layer.appendChild(source.cloneNode(true));
+}
+
+card.appendChild(layer);
+}
+
+const source=card.querySelector(".card-back .answer-content");
+const current=layer.querySelector(".answer-content");
+
+if(source&&current){
+current.innerHTML=source.innerHTML;
+}
+
+card.classList.remove("flipped");
+card.classList.add("mobile-answer");
+}
+
+function hideMobileAnswer(card){
+if(!card)return;
+
+card.classList.remove("mobile-answer");
+
+const layer=card.querySelector(".mobile-answer-layer");
+
+if(layer){
+layer.remove();
+}
+}
+
 function openCard(card){
 if(card.classList.contains("completed"))return;
 if(card.classList.contains("focused"))return;
 
 if(isMobile()){
 
-card.classList.remove("flipped");
-card.classList.add("mobile-answer");
+showMobileAnswer(card);
 
 saveCardState(card);
 
@@ -1385,7 +1462,7 @@ document.body.style.overflow="hidden";
 return;
 }
 
-card.classList.remove("mobile-answer");
+hideMobileAnswer(card);
 card.classList.add("flipped");
 
 saveCardState(card);
@@ -1502,6 +1579,12 @@ card.classList.remove(
 "mobile-answer"
 );
 
+const mobileLayer=card.querySelector(".mobile-answer-layer");
+
+if(mobileLayer){
+mobileLayer.remove();
+}
+
 card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap){
 wrap.classList.remove("revealed");
 });
@@ -1542,9 +1625,9 @@ if(isMobile()){
 card.classList.remove("flipped");
 
 if(state.mobileAnswer){
-card.classList.add("mobile-answer");
+showMobileAnswer(card);
 }else{
-card.classList.remove("mobile-answer");
+hideMobileAnswer(card);
 }
 
 }else{
@@ -1596,8 +1679,7 @@ card.classList.add("completed");
 
 if(isMobile()){
 
-card.classList.remove("flipped");
-card.classList.add("mobile-answer");
+showMobileAnswer(card);
 
 }else{
 
