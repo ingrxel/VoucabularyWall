@@ -961,13 +961,13 @@ position:absolute;
 inset:0;
 transform:none !important;
 -webkit-transform:none !important;
-backface-visibility:visible !important;
--webkit-backface-visibility:visible !important;
+backface-visibility:hidden !important;
+-webkit-backface-visibility:hidden !important;
 }
 
 .card-front{
 display:block !important;
-z-index:2;
+z-index:1;
 opacity:1 !important;
 visibility:visible !important;
 pointer-events:auto;
@@ -975,9 +975,9 @@ pointer-events:auto;
 
 .card-back{
 display:none !important;
-z-index:1;
-opacity:1 !important;
-visibility:visible !important;
+z-index:2;
+opacity:0 !important;
+visibility:hidden !important;
 pointer-events:none;
 transform:none !important;
 -webkit-transform:none !important;
@@ -990,6 +990,7 @@ transform:none !important;
 
 .flash-card.mobile-answer .card-front{
 display:none !important;
+z-index:1 !important;
 opacity:0 !important;
 visibility:hidden !important;
 pointer-events:none !important;
@@ -997,6 +998,7 @@ pointer-events:none !important;
 
 .flash-card.mobile-answer .card-back{
 display:flex !important;
+z-index:2 !important;
 opacity:1 !important;
 visibility:visible !important;
 pointer-events:auto !important;
@@ -1008,7 +1010,6 @@ transform:none !important;
 pointer-events:auto !important;
 z-index:99999 !important;
 }
-
 .intro{
 margin-bottom:30px;
 }
