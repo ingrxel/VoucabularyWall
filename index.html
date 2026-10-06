@@ -930,6 +930,8 @@ padding:
 
 .top-controls{
 margin-bottom:25px;
+position:relative;
+z-index:3000;
 }
 
 .cards-grid{
@@ -944,101 +946,120 @@ perspective:none !important;
 }
 
 /* ========================================
-   MOBILE ONLY
-   Safari-safe answer popup.
-   The original card never flips.
+   MOBILE ONLY:
+   Safari-safe answer window.
+   No mobile 3D flip.
 ======================================== */
 
-.mobile-answer-overlay{
+.flash-card.mobile-stage-active > .card-inner{
+visibility:hidden !important;
+opacity:0 !important;
+pointer-events:none !important;
+}
+
+.flash-card.mobile-stage-active{
+z-index:1099 !important;
+}
+
+.mobile-card-stage{
 position:fixed !important;
-inset:0 !important;
-z-index:5000 !important;
-display:flex !important;
-align-items:center !important;
-justify-content:center !important;
-padding:24px 5vw !important;
-background:rgba(3,42,32,.58) !important;
-backdrop-filter:blur(4px);
--webkit-backdrop-filter:blur(4px);
+top:50% !important;
+left:50% !important;
+width:min(340px,82vw) !important;
+height:280px !important;
+transform:translate(-50%,-50%) !important;
+z-index:2000 !important;
+isolation:isolate !important;
+pointer-events:auto !important;
 }
 
-.mobile-answer-window{
-position:relative !important;
-width:min(90vw,400px) !important;
-height:340px !important;
-max-height:calc(100vh - 48px) !important;
-border-radius:28px !important;
-overflow:hidden !important;
-background:linear-gradient(145deg,var(--green-dark) 0%,var(--green) 100%) !important;
-box-shadow:0 30px 80px rgba(0,0,0,.35),0 10px 30px rgba(7,91,70,.18) !important;
+.mobile-card-stage.mobile-completed-stage{
+position:absolute !important;
+top:0 !important;
+left:0 !important;
+width:100% !important;
+height:100% !important;
+transform:none !important;
+z-index:30 !important;
 }
 
-.mobile-answer-window .card-back{
+.mobile-card-stage.mobile-completed-stage .mobile-card-back{
+visibility:visible !important;
+opacity:1 !important;
+pointer-events:none !important;
+}
+
+.mobile-card-stage .mobile-card-front{
 position:absolute !important;
 inset:0 !important;
 width:100% !important;
 height:100% !important;
+border-radius:28px !important;
+overflow:hidden !important;
 transform:none !important;
 -webkit-transform:none !important;
 visibility:visible !important;
-backface-visibility:visible !important;
--webkit-backface-visibility:visible !important;
+opacity:1 !important;
+z-index:1 !important;
 }
 
-.mobile-answer-window .answer-content{
-position:relative !important;
-z-index:5 !important;
+.mobile-card-stage .mobile-card-back{
+position:absolute !important;
+inset:0 !important;
 width:100% !important;
 height:100% !important;
-padding:20px 10px 85px !important;
-display:flex !important;
-flex-direction:column !important;
-align-items:center !important;
-justify-content:center !important;
-text-align:center !important;
-}
-
-.mobile-answer-window .done-button{
-position:absolute !important;
-bottom:25px !important;
-left:50% !important;
-transform:translateX(-50%) !important;
-z-index:9999 !important;
-}
-
-/* Completed mobile cards show the answer directly, with no 3D transform. */
-.flash-card.mobile-completed .card-inner{
+border-radius:28px !important;
+overflow:hidden !important;
 transform:none !important;
 -webkit-transform:none !important;
+visibility:visible !important;
+opacity:1 !important;
+z-index:2 !important;
+display:flex !important;
 }
 
-.flash-card.mobile-completed .card-front{
+/* Hide the answer initially. */
+.mobile-card-stage .mobile-card-back{
+visibility:hidden !important;
+opacity:0 !important;
+pointer-events:none !important;
+}
+
+/* Answer window: same visual language as the card. */
+.mobile-card-stage.show-answer .mobile-card-back{
+visibility:visible !important;
+opacity:1 !important;
+pointer-events:auto !important;
+}
+
+/* Keep the answer content centered inside the mobile window. */
+.mobile-card-stage .mobile-card-back .answer-content{
+width:100% !important;
+height:100% !important;
+min-height:0 !important;
+padding:20px 10px 72px !important;
+}
+
+/* The original question card is fully covered while the answer window exists. */
+.mobile-card-stage + .mobile-face-barrier{
 display:none !important;
 }
 
-.flash-card.mobile-completed .card-back{
-transform:none !important;
--webkit-transform:none !important;
-visibility:visible !important;
-backface-visibility:visible !important;
--webkit-backface-visibility:visible !important;
-}
-
 .flash-card.focused{
-position:relative !important;
-top:auto !important;
-left:auto !important;
-width:100% !important;
-height:340px !important;
-max-width:none !important;
-max-height:none !important;
+position:fixed !important;
+top:50% !important;
+left:50% !important;
+width:min(340px,82vw) !important;
+height:280px !important;
+max-width:340px !important;
+max-height:280px !important;
 margin:0 !important;
-transform:none !important;
-transition:none !important;
+transform:translate(-50%,-50%) !important;
+transition:transform .45s ease, opacity .45s ease !important;
 }
 
 .flash-card.focused:hover{
-transform:none !important;
+transform:translate(-50%,-50%) !important;
 }
 
 .back-btn,
@@ -1049,7 +1070,6 @@ font-size:11px;
 }
 
 }
-
 /* ========================================
    FOOTER
 ======================================== */
@@ -1480,73 +1500,122 @@ if(!isMobile())return;
 */
 }
 
-function createMobileAnswerOverlay(card){
+function createMobileStage(card){
 if(!card||!isMobile())return null;
 
-let overlay=document.querySelector('.mobile-answer-overlay');
-if(overlay)return overlay;
+let stage=card.querySelector(".mobile-card-stage");
+if(stage)return stage;
 
-const back=card.querySelector('.card-back');
-if(!back)return null;
+const front=card.querySelector(".card-front");
+const back=card.querySelector(".card-back");
 
-overlay=document.createElement('div');
-overlay.className='mobile-answer-overlay';
-overlay.setAttribute('role','dialog');
-overlay.setAttribute('aria-modal','true');
+if(!front||!back)return null;
 
-const windowEl=document.createElement('div');
-windowEl.className='mobile-answer-window';
+stage=document.createElement("div");
+stage.className="mobile-card-stage";
+stage.dataset.cardIndex=card.dataset.index;
+
+const frontClone=front.cloneNode(true);
+frontClone.classList.add("mobile-card-front");
 
 const backClone=back.cloneNode(true);
-backClone.className='card-face card-back';
-backClone.style.transform='none';
-backClone.style.webkitTransform='none';
-backClone.style.backfaceVisibility='visible';
-backClone.style.webkitBackfaceVisibility='visible';
+backClone.classList.add("mobile-card-back");
 
-windowEl.appendChild(backClone);
-overlay.appendChild(windowEl);
-document.body.appendChild(overlay);
+/*
+   Mobile Safari does not use the card's 3D backface at all.
+   The answer is a normal, independent layer positioned exactly
+   over the card.
+*/
+backClone.style.transform="none";
+backClone.style.webkitTransform="none";
 
-return overlay;
+stage.appendChild(frontClone);
+stage.appendChild(backClone);
+
+/* Keep the answer window outside the card stacking context. */
+document.body.appendChild(stage);
+card.classList.add("mobile-stage-active");
+
+return stage;
 }
 
-function destroyMobileAnswerOverlay(){
-const overlay=document.querySelector('.mobile-answer-overlay');
-if(overlay)overlay.remove();
+function destroyMobileStage(card){
+if(!card)return;
+
+let stage=card.querySelector(".mobile-card-stage");
+if(!stage){
+stage=document.querySelector('.mobile-card-stage[data-card-index="'+card.dataset.index+'"]');
+}
+
+if(stage)stage.remove();
+
+card.classList.remove("mobile-stage-active");
+}
+
+function showMobileAnswer(card){
+if(!card)return;
+
+card.classList.remove("flipped");
+card.classList.add("mobile-answer");
+
+if(card.classList.contains("completed")){
+destroyMobileStage(card);
+return;
+}
+
+const stage=createMobileStage(card);
+
+if(stage){
+requestAnimationFrame(function(){
+stage.classList.add("show-answer");
+});
+}
 }
 
 function hideMobileAnswer(card){
 if(!card)return;
-destroyMobileAnswerOverlay();
-card.classList.remove('mobile-answer','mobile-modal-open');
+
+destroyMobileStage(card);
+card.classList.remove("mobile-answer");
 }
 
 function openCard(card){
-if(card.classList.contains('completed'))return;
-if(card.classList.contains('focused'))return;
+if(card.classList.contains("completed"))return;
+if(card.classList.contains("focused"))return;
 
 if(isMobile()){
-card.classList.add('focused','mobile-modal-open','mobile-answer');
-document.querySelector('.focus-overlay').classList.add('active');
-document.body.style.overflow='hidden';
 
-requestAnimationFrame(function(){
-createMobileAnswerOverlay(card);
-});
+card.classList.remove("mobile-answer");
+const stage=createMobileStage(card);
 
 saveCardState(card);
+
+setTimeout(function(){
+card.classList.add("focused");
+document.querySelector(".focus-overlay").classList.add("active");
+document.body.style.overflow="hidden";
+
+if(stage){
+requestAnimationFrame(function(){
+stage.classList.add("show-answer");
+card.classList.add("mobile-answer");
+saveCardState(card);
+});
+}
+},100);
+
 return;
 }
 
 hideMobileAnswer(card);
-card.classList.add('flipped');
+card.classList.add("flipped");
+
 saveCardState(card);
 
 setTimeout(function(){
-card.classList.add('focused');
-document.querySelector('.focus-overlay').classList.add('active');
-document.body.style.overflow='hidden';
+card.classList.add("focused");
+document.querySelector(".focus-overlay").classList.add("active");
+document.body.style.overflow="hidden";
 },100);
 }
 
@@ -1563,18 +1632,24 @@ completedCards.push(index);
 localStorage.setItem(STORAGE_KEY,JSON.stringify(completedCards));
 
 if(isMobile()){
-destroyMobileAnswerOverlay();
-card.classList.remove('focused','mobile-modal-open','mobile-answer');
-card.classList.add('mobile-completed');
+const stage=card.querySelector(".mobile-card-stage");
 
-document.querySelector('.focus-overlay').classList.remove('active');
-document.body.style.overflow='';
+card.classList.remove("focused");
+document.querySelector(".focus-overlay").classList.remove("active");
+document.body.style.overflow="";
 
-setTimeout(function(){
-card.classList.add('completed');
+if(stage){
+stage.classList.remove("show-answer");
+stage.classList.add("mobile-completed-stage");
+card.appendChild(stage);
+requestAnimationFrame(function(){
+stage.classList.add("show-answer");
+});
+}
+
+card.classList.add("completed");
+card.classList.add("mobile-answer");
 saveCardState(card);
-},50);
-
 return;
 }
 
@@ -1656,8 +1731,6 @@ saveCardState(card);
 
 function resetCards(){
 
-destroyMobileAnswerOverlay();
-
 localStorage.removeItem(STORAGE_KEY);
 localStorage.removeItem(STATE_KEY);
 
@@ -1672,9 +1745,7 @@ card.classList.remove(
 "completed",
 "focused",
 "flipped",
-"mobile-answer",
-"mobile-completed",
-"mobile-modal-open"
+"mobile-answer"
 );
 
 
@@ -1705,10 +1776,14 @@ window.location.href="../index.html";
 
 function restoreDesktopCards(){
 if(isMobile())return;
-destroyMobileAnswerOverlay();
 
+/*
+   Mobile never changes the original DOM structure,
+   so there is nothing to rebuild when returning to desktop.
+*/
 cards.forEach(function(card){
-card.classList.remove('mobile-answer','mobile-modal-open','mobile-completed');
+destroyMobileStage(card);
+card.classList.remove("mobile-stage-active","mobile-answer");
 });
 }
 
@@ -1727,7 +1802,7 @@ if(isMobile()){
 card.classList.remove("flipped");
 
 if(state.mobileAnswer){
-card.classList.remove('mobile-answer','mobile-modal-open');
+showMobileAnswer(card);
 }else{
 hideMobileAnswer(card);
 }
@@ -1781,7 +1856,7 @@ card.classList.add("completed");
 
 if(isMobile()){
 
-card.classList.add('mobile-completed');
+showMobileAnswer(card);
 
 }else{
 
