@@ -1329,172 +1329,302 @@ JAVASCRIPT
 const STORAGE_KEY="cards3CompletedCards";
 const STATE_KEY="cards3State";
 const cards=[...document.querySelectorAll(".flash-card")];
+
 let completedCards=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];
 let savedState=JSON.parse(localStorage.getItem(STATE_KEY))||{};
+
 function isMobile(){
 return window.innerWidth<=600;
 }
+
 function saveCardState(card){
 const index=Number(card.dataset.index);
+
 savedState[index]={
-flipped:card.classList.contains("flipped"),
-mobileAnswer:card.classList.contains("mobile-answer"),
+flipped:isMobile()?false:card.classList.contains("flipped"),
+mobileAnswer:isMobile()?card.classList.contains("mobile-answer"):false,
 completed:card.classList.contains("completed"),
+
 revealed:[...card.querySelectorAll(".answer-cover-wrap")].map(function(wrap){
 return wrap.classList.contains("revealed");
 }),
+
 questionRevealed:[...card.querySelectorAll(".question-second-cover")].map(function(wrap){
 return wrap.classList.contains("revealed");
 }),
+
 covers:[...card.querySelectorAll(".answer-cover")].map(function(cover){
 return cover.classList.contains("revealed");
 })
 };
+
 localStorage.setItem(STATE_KEY,JSON.stringify(savedState));
 }
+
 function openCard(card){
 if(card.classList.contains("completed"))return;
 if(card.classList.contains("focused"))return;
+
 if(isMobile()){
+
+card.classList.remove("flipped");
 card.classList.add("mobile-answer");
+
 saveCardState(card);
+
 setTimeout(function(){
 card.classList.add("focused");
 document.querySelector(".focus-overlay").classList.add("active");
 document.body.style.overflow="hidden";
 },100);
+
 return;
 }
+
+card.classList.remove("mobile-answer");
 card.classList.add("flipped");
+
 saveCardState(card);
+
 setTimeout(function(){
 card.classList.add("focused");
 document.querySelector(".focus-overlay").classList.add("active");
 document.body.style.overflow="hidden";
 },100);
 }
+
 function completeCard(card){
 if(!card)return;
 if(card.classList.contains("completed"))return;
+
 const index=Number(card.dataset.index);
+
 if(!completedCards.includes(index)){
 completedCards.push(index);
 }
+
 localStorage.setItem(STORAGE_KEY,JSON.stringify(completedCards));
+
 card.classList.remove("focused");
+
 document.querySelector(".focus-overlay").classList.remove("active");
 document.body.style.overflow="";
+
 setTimeout(function(){
 card.classList.add("completed");
 saveCardState(card);
 },450);
 }
+
 cards.forEach(function(card){
+
 card.addEventListener("click",function(event){
+
 if(event.target.closest(".done-button"))return;
 if(event.target.closest(".answer-cover"))return;
+
 openCard(card);
+
 });
+
 });
+
+
 document.addEventListener("click",function(event){
+
 const doneButton=event.target.closest(".done-button");
+
 if(!doneButton)return;
+
 event.preventDefault();
 event.stopImmediatePropagation();
+
 const card=doneButton.closest(".flash-card");
+
 if(card){
 completeCard(card);
 }
+
 },true);
+
+
 document.addEventListener("click",function(event){
+
 const answerCover=event.target.closest(".answer-cover");
+
 if(!answerCover)return;
+
 event.preventDefault();
 event.stopImmediatePropagation();
+
 if(answerCover.classList.contains("revealed"))return;
+
 const wrap=answerCover.closest(".answer-cover-wrap");
 const questionSecond=answerCover.closest(".question-second-cover");
+
 if(wrap){
 wrap.classList.add("revealed");
 }
+
 if(questionSecond&&answerCover.classList.contains("question-cover")){
 questionSecond.classList.add("revealed");
 }
+
 answerCover.classList.add("revealed");
+
 const card=answerCover.closest(".flash-card");
+
 if(card){
 saveCardState(card);
 }
+
 },true);
+
+
 function resetCards(){
+
 localStorage.removeItem(STORAGE_KEY);
 localStorage.removeItem(STATE_KEY);
+
 completedCards=[];
 savedState={};
+
 cards.forEach(function(card){
-card.classList.remove("completed","focused","flipped","mobile-answer");
+
+card.classList.remove(
+"completed",
+"focused",
+"flipped",
+"mobile-answer"
+);
+
 card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap){
 wrap.classList.remove("revealed");
 });
+
 card.querySelectorAll(".question-second-cover").forEach(function(wrap){
 wrap.classList.remove("revealed");
 });
+
 card.querySelectorAll(".answer-cover").forEach(function(cover){
 cover.classList.remove("revealed");
 });
+
 });
+
 document.querySelector(".focus-overlay").classList.remove("active");
 document.body.style.overflow="";
+
 }
+
+
 function goBack(){
 window.location.href="../index.html";
 }
+
+
 function restoreCardStates(){
+
 cards.forEach(function(card){
+
 const index=Number(card.dataset.index);
 const state=savedState[index];
+
 if(state){
-if(state.flipped){
-card.classList.add("flipped");
-}
+
+if(isMobile()){
+
+/* Mobile never uses the desktop 3D flip state. */
+card.classList.remove("flipped");
+
 if(state.mobileAnswer){
 card.classList.add("mobile-answer");
+}else{
+card.classList.remove("mobile-answer");
 }
+
+}else{
+
+/* Desktop uses the 3D flip state only. */
+card.classList.remove("mobile-answer");
+
+if(state.flipped){
+card.classList.add("flipped");
+}else{
+card.classList.remove("flipped");
+}
+
+}
+
+
 card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap,i){
+
 if(state.revealed&&state.revealed[i]){
 wrap.classList.add("revealed");
 }
+
 });
+
+
 card.querySelectorAll(".question-second-cover").forEach(function(wrap,i){
+
 if(state.questionRevealed&&state.questionRevealed[i]){
 wrap.classList.add("revealed");
 }
+
 });
+
+
 card.querySelectorAll(".answer-cover").forEach(function(cover,i){
+
 if(state.covers&&state.covers[i]){
 cover.classList.add("revealed");
 }
+
 });
+
 }
+
+
 if(completedCards.includes(index)){
+
 card.classList.add("completed");
+
 if(isMobile()){
+
+card.classList.remove("flipped");
 card.classList.add("mobile-answer");
+
 }else{
+
+card.classList.remove("mobile-answer");
 card.classList.add("flipped");
+
 }
+
 }
+
 });
+
 }
+
+
 const backButton=document.querySelector(".back-btn");
 const resetButton=document.querySelector(".reset-btn");
+
+
 if(backButton){
 backButton.addEventListener("click",goBack);
 }
+
+
 if(resetButton){
 resetButton.addEventListener("click",resetCards);
 }
+
+
 restoreCardStates();
+
 </script>
 </body>
 </html>
