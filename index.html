@@ -939,87 +939,33 @@ gap:18px;
 
 .flash-card{
 height:340px;
-perspective:none !important;
--webkit-perspective:none !important;
 }
-
-/*
-   MOBILE DOES NOT USE THE 3D FLIP SYSTEM.
-   The original card structure stays untouched.
-   Only one face is rendered at a time.
-*/
 
 .flash-card .card-inner{
 transform:none !important;
 -webkit-transform:none !important;
-transform-style:flat !important;
--webkit-transform-style:flat !important;
-}
-
-.flash-card .card-front,
-.flash-card .card-back{
-position:absolute !important;
-inset:0 !important;
-width:100% !important;
-height:100% !important;
-transform:none !important;
--webkit-transform:none !important;
-backface-visibility:visible !important;
--webkit-backface-visibility:visible !important;
-}
-
-.flash-card .card-front{
-display:flex !important;
-visibility:visible !important;
-opacity:1 !important;
-z-index:2 !important;
 }
 
 .flash-card .card-back{
 display:none !important;
 visibility:hidden !important;
-opacity:0 !important;
-z-index:1 !important;
 }
 
-.flash-card.mobile-answer .card-front{
-display:none !important;
-visibility:hidden !important;
-opacity:0 !important;
-pointer-events:none !important;
-}
-
-.flash-card.mobile-answer .card-back{
-display:flex !important;
-visibility:visible !important;
-opacity:1 !important;
-z-index:3 !important;
-pointer-events:auto !important;
-transform:none !important;
--webkit-transform:none !important;
-}
-
-.flash-card.mobile-answer .card-inner{
-transform:none !important;
--webkit-transform:none !important;
-transform-style:flat !important;
--webkit-transform-style:flat !important;
-}
-
-/* Keep the answer face fully inside the focused mobile card. */
-.flash-card.mobile-answer.focused .card-back{
-position:absolute !important;
-inset:0 !important;
+.flash-card.focused{
+position:relative !important;
+top:auto !important;
+left:auto !important;
 width:100% !important;
-height:100% !important;
-min-height:0 !important;
+height:340px !important;
+max-width:none !important;
+max-height:none !important;
+margin:0 !important;
+transform:none !important;
+z-index:auto !important;
 }
 
-.flash-card.mobile-answer.focused .answer-content{
-width:100% !important;
-height:100% !important;
-min-height:0 !important;
-padding:20px 10px 72px !important;
+.flash-card.focused:hover{
+transform:none !important;
 }
 
 .flash-card .done-button{
@@ -1031,28 +977,131 @@ z-index:99999 !important;
 margin-bottom:30px;
 }
 
-.flash-card.focused{
-position:fixed !important;
-top:50% !important;
-left:50% !important;
-width:min(340px,82vw) !important;
-height:280px !important;
-max-width:340px !important;
-max-height:280px !important;
-margin:0 !important;
-transform:translate(-50%,-50%) !important;
-transition:transform .45s ease, opacity .45s ease !important;
-}
-
-.flash-card.focused:hover{
-transform:translate(-50%,-50%) !important;
-}
-
 .back-btn,
 .reset-btn{
 padding:
 10px 14px;
 font-size:11px;
+}
+
+/* MOBILE ANSWER MODAL */
+
+.mobile-answer-modal{
+position:fixed;
+inset:0;
+z-index:10000;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.mobile-answer-panel{
+position:relative;
+width:min(340px,82vw);
+height:280px;
+border-radius:28px;
+overflow:hidden;
+background:
+linear-gradient(
+145deg,
+var(--green-dark) 0%,
+var(--green) 100%
+);
+color:white;
+box-shadow:
+0 30px 80px rgba(0,0,0,.35),
+0 10px 30px rgba(7,91,70,.18);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px 10px 72px;
+}
+
+.mobile-answer-bg{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:0;
+filter:saturate(.8);
+pointer-events:none;
+}
+
+.mobile-answer-overlay{
+position:absolute;
+inset:0;
+z-index:1;
+background:
+linear-gradient(
+180deg,
+rgba(7,91,70,.84),
+rgba(3,42,32,.94)
+);
+pointer-events:none;
+}
+
+.mobile-answer-decoration{
+position:absolute;
+inset:0;
+z-index:2;
+pointer-events:none;
+opacity:.55;
+}
+
+.mobile-answer-content{
+position:relative;
+z-index:5;
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.mobile-answer-content h3{
+font-family:"Almarai",sans-serif;
+font-size:25px;
+font-weight:800;
+margin-bottom:12px;
+color:var(--orange);
+}
+
+.mobile-answer-content p{
+font-size:15px;
+line-height:1.8;
+color:rgba(255,255,255,.88);
+max-width:300px;
+}
+
+.mobile-done-button{
+position:absolute;
+bottom:25px;
+left:50%;
+transform:translateX(-50%);
+z-index:99999;
+display:block;
+min-width:120px;
+padding:12px 28px;
+border:none;
+border-radius:50px;
+background:white;
+color:var(--green-dark);
+font-family:"Almarai",sans-serif;
+font-size:12px;
+font-weight:800;
+cursor:pointer;
+pointer-events:auto;
+touch-action:manipulation;
+user-select:none;
+-webkit-user-select:none;
+box-shadow:
+0 8px 25px rgba(0,0,0,.18);
 }
 
 }
@@ -1389,14 +1438,66 @@ function showMobileAnswer(card){
 if(!card)return;
 
 card.classList.remove("flipped");
-card.classList.add("mobile-separated");
 card.classList.add("mobile-answer");
+
+const oldModal=document.querySelector(".mobile-answer-modal");
+if(oldModal)oldModal.remove();
+
+const back=card.querySelector(".card-back");
+if(!back)return;
+
+const modal=document.createElement("div");
+modal.className="mobile-answer-modal";
+modal.dataset.cardIndex=card.dataset.index;
+
+const panel=document.createElement("div");
+panel.className="mobile-answer-panel";
+
+const backImage=back.querySelector(".back-image");
+if(backImage){
+const img=backImage.cloneNode(true);
+img.className="mobile-answer-bg";
+panel.appendChild(img);
+}
+
+const overlay=document.createElement("div");
+overlay.className="mobile-answer-overlay";
+panel.appendChild(overlay);
+
+const decoration=back.querySelector(".back-decoration");
+if(decoration){
+const deco=decoration.cloneNode(true);
+deco.className="mobile-answer-decoration";
+panel.appendChild(deco);
+}
+
+const content=back.querySelector(".answer-content");
+if(content){
+const contentClone=content.cloneNode(true);
+contentClone.className="mobile-answer-content";
+
+const done=contentClone.querySelector(".done-button");
+if(done){
+done.className="mobile-done-button";
+done.removeAttribute("type");
+}
+
+panel.appendChild(contentClone);
+}
+
+modal.appendChild(panel);
+document.body.appendChild(modal);
 }
 
 function hideMobileAnswer(card){
-if(!card)return;
+if(card)card.classList.remove("mobile-answer");
 
-card.classList.remove("mobile-answer");
+const modal=document.querySelector(".mobile-answer-modal");
+if(!modal)return;
+
+if(!card || Number(modal.dataset.cardIndex)===Number(card.dataset.index)){
+modal.remove();
+}
 }
 
 
@@ -1410,11 +1511,8 @@ showMobileAnswer(card);
 
 saveCardState(card);
 
-setTimeout(function(){
-card.classList.add("focused");
 document.querySelector(".focus-overlay").classList.add("active");
 document.body.style.overflow="hidden";
-},100);
 
 return;
 }
@@ -1444,6 +1542,7 @@ completedCards.push(index);
 localStorage.setItem(STORAGE_KEY,JSON.stringify(completedCards));
 
 card.classList.remove("focused");
+hideMobileAnswer(card);
 
 document.querySelector(".focus-overlay").classList.remove("active");
 document.body.style.overflow="";
@@ -1519,6 +1618,30 @@ saveCardState(card);
 },true);
 
 
+document.addEventListener("click",function(event){
+
+const mobileDone=event.target.closest(".mobile-done-button");
+
+if(!mobileDone)return;
+
+event.preventDefault();
+event.stopImmediatePropagation();
+
+const modal=mobileDone.closest(".mobile-answer-modal");
+if(!modal)return;
+
+const index=Number(modal.dataset.cardIndex);
+const card=cards.find(function(item){
+return Number(item.dataset.index)===index;
+});
+
+if(card){
+completeCard(card);
+}
+
+},true);
+
+
 function resetCards(){
 
 localStorage.removeItem(STORAGE_KEY);
@@ -1526,6 +1649,9 @@ localStorage.removeItem(STATE_KEY);
 
 completedCards=[];
 savedState={};
+
+const mobileModal=document.querySelector(".mobile-answer-modal");
+if(mobileModal)mobileModal.remove();
 
 cards.forEach(function(card){
 
@@ -1568,6 +1694,11 @@ function restoreDesktopCards(){
 }
 
 function restoreCardStates(){
+
+if(!isMobile()){
+const mobileModal=document.querySelector(".mobile-answer-modal");
+if(mobileModal)mobileModal.remove();
+}
 
 cards.forEach(function(card){
 
