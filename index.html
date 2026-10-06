@@ -939,16 +939,14 @@ gap:18px;
 
 .flash-card{
 height:340px;
-perspective:none;
--webkit-perspective:none;
-}
-
-.flash-card:hover{
-transform:none;
+perspective:none !important;
+-webkit-perspective:none !important;
 }
 
 .card-inner{
 position:relative !important;
+width:100% !important;
+height:100% !important;
 transform:none !important;
 -webkit-transform:none !important;
 transform-style:flat !important;
@@ -957,17 +955,21 @@ transition:none !important;
 }
 
 .card-face{
-position:absolute;
-inset:0;
+position:absolute !important;
+inset:0 !important;
+width:100% !important;
+height:100% !important;
 transform:none !important;
 -webkit-transform:none !important;
-backface-visibility:hidden !important;
--webkit-backface-visibility:hidden !important;
+backface-visibility:visible !important;
+-webkit-backface-visibility:visible !important;
 }
 
 .card-front{
 display:block !important;
-z-index:1;
+position:absolute !important;
+inset:0 !important;
+z-index:2 !important;
 opacity:1 !important;
 visibility:visible !important;
 pointer-events:auto;
@@ -975,15 +977,12 @@ pointer-events:auto;
 
 .card-back{
 display:none !important;
-z-index:2;
+position:absolute !important;
+inset:0 !important;
+z-index:1 !important;
 opacity:0 !important;
 visibility:hidden !important;
-pointer-events:none;
-transform:none !important;
--webkit-transform:none !important;
-}
-
-.flash-card.mobile-answer .card-inner{
+pointer-events:none !important;
 transform:none !important;
 -webkit-transform:none !important;
 }
@@ -998,10 +997,15 @@ pointer-events:none !important;
 
 .flash-card.mobile-answer .card-back{
 display:flex !important;
-z-index:2 !important;
+z-index:10 !important;
 opacity:1 !important;
 visibility:visible !important;
 pointer-events:auto !important;
+transform:none !important;
+-webkit-transform:none !important;
+}
+
+.flash-card.mobile-answer .card-inner{
 transform:none !important;
 -webkit-transform:none !important;
 }
