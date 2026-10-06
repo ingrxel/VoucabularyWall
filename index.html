@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بطاقات SGC101</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--cream:#fff9ed;
+--cream-dark:#f3eadb;
+--green-dark:#075b46;
+--green:#0d7055;
+--green-soft:#6fae99;
+--gold:#f2a23a;
+--brown:#c58a4a;
+--orange:#f7941d;
+--blue:#2e6b62;
+--white:#ffffff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+min-height:100vh;
+margin:0;
+font-family:"Tajawal",sans-serif;
+background:var(--cream);
+color:var(--green-dark);
+overflow-x:hidden;
+}
+
+button{
+font-family:"Almarai",sans-serif;
+}
+
+
+/* ========================================
+   BACKGROUND
+======================================== */
+
+.background-design{
+position:fixed;
+inset:0;
+z-index:-5;
+pointer-events:none;
+overflow:hidden;
+background:
+radial-gradient(
+circle at 10% 15%,
+rgba(111,174,153,.16),
+transparent 25%
+),
+radial-gradient(
+circle at 90% 85%,
+rgba(242,162,58,.14),
+transparent 28%
+),
+#fff9ed;
+}
+
+.polygon{
+position:absolute;
+border-radius:40px;
+}
+
+.p1{
+top:-100px;
+right:-90px;
+width:360px;
+height:360px;
+background:rgba(111,174,153,.16);
+clip-path:polygon(
+30% 0%,
+100% 0%,
+100% 70%,
+65% 100%,
+0% 45%
+);
+transform:rotate(8deg);
+}
+
+.p2{
+top:20%;
+left:-150px;
+width:330px;
+height:330px;
+background:rgba(242,162,58,.12);
+clip-path:polygon(
+0% 20%,
+70% 0%,
+100% 65%,
+35% 100%
+);
+transform:rotate(-12deg);
+}
+
+.p3{
+bottom:-130px;
+left:15%;
+width:350px;
+height:350px;
+background:rgba(111,174,153,.11);
+clip-path:polygon(
+20% 0%,
+100% 35%,
+75% 100%,
+0% 70%
+);
+}
+
+.p4{
+bottom:-120px;
+right:-80px;
+width:330px;
+height:330px;
+background:rgba(242,162,58,.11);
+clip-path:polygon(
+0% 30%,
+55% 0%,
+100% 45%,
+70% 100%,
+15% 80%
+);
+}
+
+.topographic-lines{
+position:absolute;
+width:700px;
+height:700px;
+border:1px solid rgba(7,91,70,.07);
+border-radius:48% 52% 55% 45%;
+transform:rotate(-18deg);
+}
+
+.line1{
+top:-280px;
+left:-180px;
+}
+
+.line2{
+top:-245px;
+left:-145px;
+transform:rotate(-18deg) scale(.88);
+}
+
+.line3{
+top:-210px;
+left:-110px;
+transform:rotate(-18deg) scale(.76);
+}
+
+.line4{
+bottom:-300px;
+right:-180px;
+transform:rotate(28deg);
+}
+
+.line5{
+bottom:-265px;
+right:-145px;
+transform:rotate(28deg) scale(.88);
+}
+
+.line6{
+bottom:-230px;
+right:-110px;
+transform:rotate(28deg) scale(.76);
+}
+
+.dots-pattern{
+position:absolute;
+top:14%;
+right:7%;
+width:90px;
+height:90px;
+background-image:
+radial-gradient(
+rgba(7,91,70,.12) 1.5px,
+transparent 1.5px
+);
+background-size:15px 15px;
+opacity:.45;
+}
+
+
+/* ========================================
+   PAGE
+======================================== */
+
+.page{
+width:100%;
+min-height:100vh;
+padding:40px 6vw 60px;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+
+/* ========================================
+   TOP CONTROLS
+======================================== */
+
+.top-controls{
+width:100%;
+max-width:1200px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:30px;
+}
+
+.back-btn,
+.reset-btn{
+border:none;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:9px;
+padding:11px 18px;
+border-radius:50px;
+font-size:12px;
+font-weight:700;
+transition:
+transform .3s ease,
+background .3s ease,
+box-shadow .3s ease;
+}
+
+.back-btn{
+background:rgba(255,255,255,.75);
+color:var(--green-dark);
+border:1px solid rgba(7,91,70,.1);
+box-shadow:
+0 6px 20px rgba(7,91,70,.05);
+}
+
+.reset-btn{
+background:var(--green-dark);
+color:white;
+box-shadow:
+0 8px 22px rgba(7,91,70,.15);
+}
+
+.back-btn:hover,
+.reset-btn:hover{
+transform:translateY(-3px);
+}
+
+.back-btn:hover{
+background:white;
+}
+
+.reset-btn:hover{
+background:var(--green);
+}
+
+
+/* ========================================
+   INTRO
+======================================== */
+
+.intro{
+width:100%;
+max-width:1000px;
+text-align:center;
+margin-bottom:45px;
+}
+
+.intro-label{
+display:inline-flex;
+align-items:center;
+gap:9px;
+padding:8px 17px;
+border:1px solid rgba(13,112,85,.15);
+border-radius:50px;
+background:rgba(255,255,255,.6);
+color:var(--green);
+font-family:"Almarai",sans-serif;
+font-size:12px;
+font-weight:700;
+margin-bottom:18px;
+box-shadow:
+0 5px 20px rgba(7,91,70,.04);
+}
+
+.intro-label i{
+font-size:11px;
+color:var(--orange);
+}
+
+.intro h1{
+font-family:"Almarai",sans-serif;
+font-size:clamp(30px,5vw,52px);
+font-weight:800;
+line-height:1.2;
+color:var(--green-dark);
+margin-bottom:12px;
+}
+
+.intro h1 span{
+color:var(--orange);
+}
+
+.intro p{
+max-width:620px;
+margin:auto;
+font-size:clamp(13px,1.5vw,16px);
+line-height:1.9;
+color:rgba(7,91,70,.62);
+}
+
+
+/* ========================================
+   CARDS GRID
+======================================== */
+
+.cards-grid{
+width:100%;
+max-width:1200px;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:24px;
+}
+
+
+/* ========================================
+   FLASH CARD
+======================================== */
+
+.flash-card{
+position:relative;
+height:350px;
+perspective:1400px;
+cursor:pointer;
+transition:
+transform .45s ease,
+opacity .45s ease;
+}
+
+.flash-card:hover{
+transform:translateY(-5px);
+}
+
+.card-inner{
+position:relative;
+width:100%;
+height:100%;
+transform-style:preserve-3d;
+-webkit-transform-style:preserve-3d;
+transition:
+transform .75s cubic-bezier(.4,0,.2,1);
+}
+
+.flash-card.flipped .card-inner{
+transform:rotateY(180deg);
+-webkit-transform:rotateY(180deg);
+}
+
+
+/* ========================================
+   CARD FACES
+======================================== */
+
+.card-face{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+border-radius:28px;
+overflow:hidden;
+backface-visibility:hidden;
+-webkit-backface-visibility:hidden;
+box-shadow:
+0 15px 35px rgba(7,91,70,.12),
+0 4px 12px rgba(7,91,70,.06);
+}
+
+
+/* ========================================
+   CARD FRONT
+======================================== */
+
+.card-front{
+background:
+linear-gradient(
+145deg,
+var(--green-dark) 0%,
+var(--green) 100%
+);
+}
+
+.card-image{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+transition:
+transform .7s ease,
+filter .7s ease;
+pointer-events:none;
+}
+
+.flash-card:hover .card-image{
+transform:scale(1.06);
+filter:saturate(1.08);
+}
+
+.card-overlay{
+position:absolute;
+inset:0;
+z-index:1;
+pointer-events:none;
+background:
+linear-gradient(
+180deg,
+rgba(7,91,70,.08) 0%,
+rgba(7,91,70,.18) 45%,
+rgba(3,42,32,.72) 100%
+);
+transition:background .5s ease;
+}
+
+.flash-card:hover .card-overlay{
+background:
+linear-gradient(
+180deg,
+rgba(7,91,70,.06) 0%,
+rgba(7,91,70,.14) 45%,
+rgba(3,42,32,.68) 100%
+);
+}
+
+
+/* ========================================
+   CARD DECORATION
+======================================== */
+
+.card-decoration,
+.back-decoration{
+position:absolute;
+inset:0;
+z-index:2;
+pointer-events:none;
+opacity:.55;
+}
+
+.geo-line{
+position:absolute;
+border:1px solid rgba(255,255,255,.35);
+border-radius:48% 52% 45% 55%;
+}
+
+.geo-line.one{
+width:390px;
+height:280px;
+top:-110px;
+right:-130px;
+transform:rotate(18deg);
+}
+
+.geo-line.two{
+width:330px;
+height:235px;
+top:-85px;
+right:-100px;
+transform:rotate(18deg);
+}
+
+.geo-line.three{
+width:270px;
+height:190px;
+top:-60px;
+right:-70px;
+transform:rotate(18deg);
+}
+
+.geo-line.four{
+width:340px;
+height:240px;
+bottom:-120px;
+left:-130px;
+transform:rotate(-20deg);
+}
+
+.geo-line.five{
+width:285px;
+height:200px;
+bottom:-95px;
+left:-100px;
+transform:rotate(-20deg);
+}
+
+
+/* ========================================
+   FRONT CONTENT
+======================================== */
+
+.front-content{
+position:absolute;
+inset:0;
+z-index:3;
+color:white;
+pointer-events:none;
+direction:ltr;
+}
+
+/* ========================================
+   CARD NUMBER
+======================================== */
+
+.card-number{
+position:absolute;
+top:25px;
+left:50%;
+transform:translateX(-50%);
+width:44px;
+height:44px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:14px;
+background:rgba(247,148,29,.92);
+border:1px solid rgba(255,255,255,.3);
+backdrop-filter:blur(7px);
+font-family:"Almarai",sans-serif;
+font-size:13px;
+font-weight:800;
+box-shadow:
+0 7px 20px rgba(0,0,0,.1);
+}
+
+/* ========================================
+   FRONT SENTENCE
+======================================== */
+
+.front-content h2{
+position:absolute;
+top:100px;
+left:50%;
+transform:translateX(-50%);
+
+width:calc(100% - 48px);
+max-width:290px;
+height:220px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+margin:0;
+padding:0;
+
+font-family:"Almarai",sans-serif;
+font-size:18px;
+font-weight:700;
+line-height:1.55;
+text-align:center;
+
+text-wrap:balance;
+word-break:normal;
+overflow-wrap:break-word;
+
+text-shadow:
+0 3px 15px rgba(0,0,0,.25);
+}
+
+
+/* ========================================
+   CARD ARROW
+======================================== */
+
+.card-arrow{
+position:absolute;
+bottom:22px;
+left:22px;
+z-index:4;
+width:38px;
+height:38px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+background:rgba(247,148,29,.88);
+border:1px solid rgba(255,255,255,.25);
+font-size:12px;
+pointer-events:none;
+transition:
+transform .35s ease,
+background .35s ease;
+}
+
+.flash-card:hover .card-arrow{
+transform:translateX(-5px);
+background:var(--orange);
+}
+
+
+/* ========================================
+   CARD BACK
+======================================== */
+
+.card-back{
+transform:rotateY(180deg);
+-webkit-transform:rotateY(180deg);
+background:
+linear-gradient(
+145deg,
+var(--green-dark) 0%,
+var(--green) 100%
+);
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+padding:30px;
+pointer-events:auto;
+}
+
+.back-image{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:0;
+filter:saturate(.8);
+pointer-events:none;
+}
+
+.back-overlay{
+position:absolute;
+inset:0;
+z-index:1;
+pointer-events:none;
+background:
+linear-gradient(
+180deg,
+rgba(7,91,70,.84),
+rgba(3,42,32,.94)
+);
+}
+
+
+/* ========================================
+   ANSWER CONTENT
+======================================== */
+
+.answer-content{
+position:relative;
+z-index:5;
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px 10px 95px;
+pointer-events:auto;
+}
+
+.answer-icon{
+width:58px;
+height:58px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:18px;
+background:rgba(255,255,255,.12);
+border:1px solid rgba(255,255,255,.2);
+margin-bottom:20px;
+font-size:20px;
+pointer-events:none;
+}
+
+.answer-content h3{
+font-family:"Almarai",sans-serif;
+font-size:clamp(25px,2.5vw,34px);
+font-weight:800;
+margin-bottom:12px;
+color:var(--orange);
+pointer-events:none;
+}
+
+.answer-content p{
+font-size:15px;
+line-height:1.8;
+color:rgba(255,255,255,.88);
+max-width:480px;
+pointer-events:none;
+}
+
+
+/* ========================================
+   DONE BUTTON
+======================================== */
+
+.done-button{
+position:absolute;
+bottom:25px;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+display:block;
+width:auto;
+min-width:120px;
+padding:12px 28px;
+border:none;
+border-radius:50px;
+background:white;
+color:var(--green-dark);
+font-family:"Almarai",sans-serif;
+font-size:12px;
+font-weight:800;
+cursor:pointer;
+pointer-events:auto !important;
+touch-action:manipulation;
+user-select:none;
+-webkit-user-select:none;
+box-shadow:
+0 8px 25px rgba(0,0,0,.18);
+transition:
+transform .3s ease,
+box-shadow .3s ease,
+background .3s ease;
+}
+
+.done-button:hover{
+transform:
+translateX(-50%)
+translateY(-3px);
+box-shadow:
+0 12px 30px rgba(0,0,0,.25);
+background:#fff9ed;
+}
+
+.done-button:active{
+transform:
+translateX(-50%)
+translateY(0);
+}
+
+
+/* ========================================
+   FOCUSED CARD
+======================================== */
+
+.flash-card.focused{
+position:fixed;
+top:50%;
+left:50%;
+width:min(560px,82vw);
+height:min(620px,78vh);
+z-index:1000;
+margin:0;
+transform:
+translate(-50%,-50%) !important;
+cursor:default;
+transition:
+width .45s ease,
+height .45s ease,
+transform .45s ease,
+opacity .45s ease;
+}
+
+.flash-card.focused:hover{
+transform:
+translate(-50%,-50%) !important;
+}
+
+.flash-card.focused .card-face{
+box-shadow:
+0 30px 80px rgba(0,0,0,.35),
+0 10px 30px rgba(7,91,70,.18);
+}
+
+.flash-card.focused .done-button{
+z-index:99999;
+pointer-events:auto !important;
+}
+
+
+/* ========================================
+   FOCUS OVERLAY
+======================================== */
+
+.focus-overlay{
+position:fixed;
+inset:0;
+z-index:900;
+background:rgba(3,42,32,.55);
+backdrop-filter:blur(4px);
+opacity:0;
+visibility:hidden;
+pointer-events:none;
+transition:
+opacity .35s ease,
+visibility .35s ease;
+}
+
+.focus-overlay.active{
+opacity:1;
+visibility:visible;
+pointer-events:none;
+}
+
+
+/* ========================================
+   COMPLETED CARD
+======================================== */
+
+.flash-card.completed{
+cursor:default;
+transform:none !important;
+opacity:.72;
+transition:
+opacity .35s ease;
+}
+
+.flash-card.completed:hover{
+transform:none !important;
+}
+
+.flash-card.completed .card-image{
+filter:
+saturate(.65)
+brightness(.82);
+}
+
+.flash-card.completed .card-overlay{
+background:
+linear-gradient(
+180deg,
+rgba(7,91,70,.25),
+rgba(3,42,32,.86)
+);
+}
+
+.flash-card.completed::after{
+content:"✓";
+position:absolute;
+top:18px;
+left:18px;
+z-index:20;
+width:38px;
+height:38px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+background:rgba(255,255,255,.92);
+color:var(--green);
+font-size:15px;
+font-weight:800;
+box-shadow:
+0 6px 18px rgba(0,0,0,.12);
+pointer-events:none;
+}
+
+
+/* ========================================
+   POINTER EVENTS
+======================================== */
+
+.flash-card .card-image,
+.flash-card .card-overlay,
+.flash-card .card-decoration,
+.flash-card .back-image,
+.flash-card .back-overlay,
+.flash-card .back-decoration{
+pointer-events:none;
+}
+
+.flash-card .answer-content{
+pointer-events:auto;
+z-index:5;
+}
+
+.flash-card .done-button{
+pointer-events:auto !important;
+z-index:99999 !important;
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media(max-width:900px){
+
+.cards-grid{
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+}
+
+.flash-card{
+height:330px;
+}
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media(max-width:600px){
+
+.page{
+padding:
+25px
+5vw
+45px;
+}
+
+.top-controls{
+margin-bottom:25px;
+}
+
+.cards-grid{
+grid-template-columns:1fr;
+gap:18px;
+}
+
+.flash-card{
+height:340px;
+perspective:none;
+-webkit-perspective:none;
+}
+
+.flash-card:hover{
+transform:none;
+}
+
+.card-inner{
+position:relative !important;
+transform:none !important;
+-webkit-transform:none !important;
+transform-style:flat !important;
+-webkit-transform-style:flat !important;
+transition:none !important;
+}
+
+.card-face{
+position:absolute;
+inset:0;
+transform:none !important;
+-webkit-transform:none !important;
+backface-visibility:visible !important;
+-webkit-backface-visibility:visible !important;
+}
+
+.card-front{
+display:block !important;
+z-index:2;
+opacity:1 !important;
+visibility:visible !important;
+pointer-events:auto;
+}
+
+.card-back{
+display:none !important;
+z-index:1;
+opacity:1 !important;
+visibility:visible !important;
+pointer-events:none;
+transform:none !important;
+-webkit-transform:none !important;
+}
+
+.flash-card.mobile-answer .card-inner{
+transform:none !important;
+-webkit-transform:none !important;
+}
+
+.flash-card.mobile-answer .card-front{
+display:none !important;
+opacity:0 !important;
+visibility:hidden !important;
+pointer-events:none !important;
+}
+
+.flash-card.mobile-answer .card-back{
+display:flex !important;
+opacity:1 !important;
+visibility:visible !important;
+pointer-events:auto !important;
+transform:none !important;
+-webkit-transform:none !important;
+}
+
+.flash-card.mobile-answer .done-button{
+pointer-events:auto !important;
+z-index:99999 !important;
+}
+
+.intro{
+margin-bottom:30px;
+}
+
+.flash-card.focused{
+width:88vw;
+height:78vh;
+}
+
+.flash-card.focused:hover{
+transform:
+translate(-50%,-50%) !important;
+}
+
+.back-btn,
+.reset-btn{
+padding:
+10px 14px;
+font-size:11px;
+}
+
+}
+
+
+/* ========================================
+   ANSWER COVER
+======================================== */
+
+.answer-cover-wrap{
+position:relative;
+width:100%;
+min-height:170px;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-top:15px;
+}
+
+.answer-hidden{
+width:100%;
+min-height:150px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.answer-cover{
+position:absolute;
+inset:0;
+z-index:20;
+border:none;
+border-radius:20px;
+background:var(--cream);
+color:var(--green-dark);
+font-family:"Almarai",sans-serif;
+font-size:18px;
+font-weight:800;
+cursor:pointer;
+box-shadow:
+0 8px 25px rgba(0,0,0,.18);
+transition:
+transform .5s ease,
+opacity .4s ease;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+}
+
+.answer-cover i{
+font-size:15px;
+color:var(--green);
+}
+
+.answer-cover:hover{
+transform:translateY(4px);
+}
+
+.answer-cover-wrap.revealed .answer-cover{
+transform:translateY(115%);
+opacity:0;
+pointer-events:none;
+}
+
+.answer-cover-wrap.revealed .answer-hidden{
+opacity:1;
+}
+</style>
+</head>
+
+<body>
+<div class="background-design">
+<div class="polygon p1"></div>
+<div class="polygon p2"></div>
+<div class="polygon p3"></div>
+<div class="polygon p4"></div>
+<div class="topographic-lines line1"></div>
+<div class="topographic-lines line2"></div>
+<div class="topographic-lines line3"></div>
+<div class="topographic-lines line4"></div>
+<div class="topographic-lines line5"></div>
+<div class="topographic-lines line6"></div>
+<div class="dots-pattern"></div>
+</div>
+<div class="focus-overlay" id="focusOverlay"></div>
+<main class="page">
+<div class="top-controls">
+<button class="reset-btn" type="button" id="resetButton">
+<i class="fa-solid fa-rotate-right"></i>
+ReSet
+</button>
+</div>
+<section class="intro">
+<div class="intro-label">
+<i class="fa-solid fa-mountain"></i>Vocbulary Wall
+</div>
+<h1>Back On Track</h1>
+<p>expanding your vocabulary, and knowing how to make meaning of an unfamilar word by using the contect given.</p>
+</section>
+<section class="cards-grid">
+
+<article class="flash-card" data-index="0">
+<div class="card-inner">
+
+<div class="card-face card-front">
+<div class="card-overlay"></div>
+
+<div class="card-decoration">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+
+<div class="front-content">
+<div class="card-number">01</div>
+<h2>The students are organizing their courses by extrapolating what they’ve heard or experienced with different professors and timings, so it can match their preference.</h2>
+</div>
+
+<div class="card-arrow">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+</div>
+
+<div class="card-face card-back">
+<div class="back-overlay"></div>
+
+<div class="back-decoration">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+
+<div class="answer-content">
+<h3>Extrapolate</h3>
+<p>To form an opinion based on past experiences or known facts.</p>
+<button type="button" class="done-button">DONE</button>
+</div>
+
+</div>
+</div>
+</article>
+
+
+<article class="flash-card" data-index="1">
+<div class="card-inner">
+
+<div class="card-face card-front">
+<div class="card-overlay"></div>
+
+<div class="card-decoration">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+
+<div class="front-content">
+<div class="card-number">02</div>
+<h2>Students are advised to revamp their schedule to fit within their academic routine.</h2>
+</div>
+
+<div class="card-arrow">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+</div>
+
+<div class="card-face card-back">
+<div class="back-overlay"></div>
+
+<div class="back-decoration">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+
+<div class="answer-content">
+<h3>Revamp</h3>
+<p>To modify or to change.</p>
+<button type="button" class="done-button">DONE</button>
+</div>
+
+</div>
+</div>
+</article>
+
+
+<article class="flash-card" data-index="2">
+<div class="card-inner">
+
+<div class="card-face card-front">
+<div class="card-overlay"></div>
+
+<div class="card-decoration">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+
+<div class="front-content">
+<div class="card-number">03</div>
+<h2>It is common for students to expect unforeseen changes in their schedule within the first week into the year.</h2>
+</div>
+
+<div class="card-arrow">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+</div>
+
+<div class="card-face card-back">
+<div class="back-overlay"></div>
+
+<div class="back-decoration">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+
+<div class="answer-content">
+<h3>Unforeseen</h3>
+<p>Not expected.</p>
+<button type="button" class="done-button">DONE</button>
+</div>
+
+</div>
+</div>
+</article>
+
+
+<article class="flash-card" data-index="3">
+<div class="card-inner">
+
+<div class="card-face card-front">
+<div class="card-overlay"></div>
+
+<div class="card-decoration">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+
+<div class="front-content">
+<div class="card-number">04</div>
+<h2>After spending a month on campus, I’m starting to harmonize with the environment more.</h2>
+</div>
+
+<div class="card-arrow">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+</div>
+
+<div class="card-face card-back">
+<div class="back-overlay"></div>
+
+<div class="back-decoration">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+
+<div class="answer-content">
+<h3>Harmonize</h3>
+<p>To form a comfortable and pleasing relationship.</p>
+<button type="button" class="done-button">DONE</button>
+</div>
+
+</div>
+</div>
+</article>
+
+
+</section>
+</main>
+<!-- ========================================
+JAVASCRIPT
+======================================== -->
+<script>
+const STORAGE_KEY="cards3CompletedCards";
+const STATE_KEY="cards3State";
+const cards=[...document.querySelectorAll(".flash-card")];
+let completedCards=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];
+let savedState=JSON.parse(localStorage.getItem(STATE_KEY))||{};
+function isMobile(){
+return window.innerWidth<=600;
+}
+function saveCardState(card){
+const index=Number(card.dataset.index);
+savedState[index]={
+flipped:card.classList.contains("flipped"),
+mobileAnswer:card.classList.contains("mobile-answer"),
+completed:card.classList.contains("completed"),
+revealed:[...card.querySelectorAll(".answer-cover-wrap")].map(function(wrap){
+return wrap.classList.contains("revealed");
+}),
+questionRevealed:[...card.querySelectorAll(".question-second-cover")].map(function(wrap){
+return wrap.classList.contains("revealed");
+}),
+covers:[...card.querySelectorAll(".answer-cover")].map(function(cover){
+return cover.classList.contains("revealed");
+})
+};
+localStorage.setItem(STATE_KEY,JSON.stringify(savedState));
+}
+function openCard(card){
+if(card.classList.contains("completed"))return;
+if(card.classList.contains("focused"))return;
+if(isMobile()){
+card.classList.add("mobile-answer");
+saveCardState(card);
+setTimeout(function(){
+card.classList.add("focused");
+document.querySelector(".focus-overlay").classList.add("active");
+document.body.style.overflow="hidden";
+},100);
+return;
+}
+card.classList.add("flipped");
+saveCardState(card);
+setTimeout(function(){
+card.classList.add("focused");
+document.querySelector(".focus-overlay").classList.add("active");
+document.body.style.overflow="hidden";
+},100);
+}
+function completeCard(card){
+if(!card)return;
+if(card.classList.contains("completed"))return;
+const index=Number(card.dataset.index);
+if(!completedCards.includes(index)){
+completedCards.push(index);
+}
+localStorage.setItem(STORAGE_KEY,JSON.stringify(completedCards));
+card.classList.remove("focused");
+document.querySelector(".focus-overlay").classList.remove("active");
+document.body.style.overflow="";
+setTimeout(function(){
+card.classList.add("completed");
+saveCardState(card);
+},450);
+}
+cards.forEach(function(card){
+card.addEventListener("click",function(event){
+if(event.target.closest(".done-button"))return;
+if(event.target.closest(".answer-cover"))return;
+openCard(card);
+});
+});
+document.addEventListener("click",function(event){
+const doneButton=event.target.closest(".done-button");
+if(!doneButton)return;
+event.preventDefault();
+event.stopImmediatePropagation();
+const card=doneButton.closest(".flash-card");
+if(card){
+completeCard(card);
+}
+},true);
+document.addEventListener("click",function(event){
+const answerCover=event.target.closest(".answer-cover");
+if(!answerCover)return;
+event.preventDefault();
+event.stopImmediatePropagation();
+if(answerCover.classList.contains("revealed"))return;
+const wrap=answerCover.closest(".answer-cover-wrap");
+const questionSecond=answerCover.closest(".question-second-cover");
+if(wrap){
+wrap.classList.add("revealed");
+}
+if(questionSecond&&answerCover.classList.contains("question-cover")){
+questionSecond.classList.add("revealed");
+}
+answerCover.classList.add("revealed");
+const card=answerCover.closest(".flash-card");
+if(card){
+saveCardState(card);
+}
+},true);
+function resetCards(){
+localStorage.removeItem(STORAGE_KEY);
+localStorage.removeItem(STATE_KEY);
+completedCards=[];
+savedState={};
+cards.forEach(function(card){
+card.classList.remove("completed","focused","flipped","mobile-answer");
+card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap){
+wrap.classList.remove("revealed");
+});
+card.querySelectorAll(".question-second-cover").forEach(function(wrap){
+wrap.classList.remove("revealed");
+});
+card.querySelectorAll(".answer-cover").forEach(function(cover){
+cover.classList.remove("revealed");
+});
+});
+document.querySelector(".focus-overlay").classList.remove("active");
+document.body.style.overflow="";
+}
+function goBack(){
+window.location.href="../index.html";
+}
+function restoreCardStates(){
+cards.forEach(function(card){
+const index=Number(card.dataset.index);
+const state=savedState[index];
+if(state){
+if(state.flipped){
+card.classList.add("flipped");
+}
+if(state.mobileAnswer){
+card.classList.add("mobile-answer");
+}
+card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap,i){
+if(state.revealed&&state.revealed[i]){
+wrap.classList.add("revealed");
+}
+});
+card.querySelectorAll(".question-second-cover").forEach(function(wrap,i){
+if(state.questionRevealed&&state.questionRevealed[i]){
+wrap.classList.add("revealed");
+}
+});
+card.querySelectorAll(".answer-cover").forEach(function(cover,i){
+if(state.covers&&state.covers[i]){
+cover.classList.add("revealed");
+}
+});
+}
+if(completedCards.includes(index)){
+card.classList.add("completed");
+if(isMobile()){
+card.classList.add("mobile-answer");
+}else{
+card.classList.add("flipped");
+}
+}
+});
+}
+const backButton=document.querySelector(".back-btn");
+const resetButton=document.querySelector(".reset-btn");
+if(backButton){
+backButton.addEventListener("click",goBack);
+}
+if(resetButton){
+resetButton.addEventListener("click",resetCards);
+}
+restoreCardStates();
+</script>
+</body>
+</html>
