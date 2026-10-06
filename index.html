@@ -943,113 +943,141 @@ perspective:none !important;
 -webkit-perspective:none !important;
 }
 
-/*
+/* ========================================
    MOBILE ONLY:
-   The question and answer are physically separated from the
-   desktop 3D card. Safari never has to render both faces of
-   the same 3D surface at once.
-*/
-.flash-card.mobile-separated{
+   Two completely separate card layers + a
+   real opaque barrier. No 3D flip is used.
+======================================== */
+
+.flash-card.mobile-stage-active > .card-inner{
+visibility:hidden !important;
+opacity:0 !important;
+pointer-events:none !important;
+}
+
+.flash-card.mobile-stage-active{
+z-index:1099 !important;
+}
+
+.mobile-card-stage{
+position:fixed !important;
+top:50% !important;
+left:50% !important;
+width:min(340px,82vw) !important;
+height:min(280px,62vh) !important;
+max-width:340px !important;
+min-height:240px !important;
+transform:translate(-50%,-50%) !important;
+z-index:1100 !important;
 isolation:isolate !important;
-contain:layout paint !important;
+overflow:visible !important;
+pointer-events:auto !important;
+}
+
+.mobile-card-stage .mobile-card-front,
+.mobile-card-stage .mobile-card-back{
+border-radius:28px !important;
 overflow:hidden !important;
 }
 
-.flash-card.mobile-separated .card-front,
-.flash-card.mobile-separated .card-back{
+.mobile-card-stage .mobile-card-front,
+.mobile-card-stage .mobile-card-back{
 position:absolute !important;
 inset:0 !important;
 width:100% !important;
 height:100% !important;
+margin:0 !important;
 transform:none !important;
 -webkit-transform:none !important;
 backface-visibility:visible !important;
 -webkit-backface-visibility:visible !important;
+transition:
+transform .42s ease,
+opacity .32s ease,
+visibility 0s linear 0s !important;
 }
 
-/* Question card. */
-.flash-card.mobile-separated .card-front{
-display:flex !important;
-z-index:1 !important;
-opacity:1 !important;
-visibility:visible !important;
-pointer-events:auto !important;
-}
-
-/* Answer card stays completely out of the render tree until needed. */
-.flash-card.mobile-separated .card-back{
-display:none !important;
+.mobile-card-stage .mobile-card-front{
 z-index:3 !important;
+visibility:visible !important;
 opacity:1 !important;
+transform:translateX(0) !important;
+pointer-events:none !important;
+}
+
+.mobile-card-stage .mobile-card-back{
+z-index:1 !important;
 visibility:hidden !important;
+opacity:0 !important;
+transform:translateX(18px) !important;
 pointer-events:none !important;
 }
 
 /*
-   REAL OPAQUE BARRIER:
-   this is a separate painted layer between the two faces.
-   It prevents Safari from compositing the hidden face through
-   the card while the mobile answer is being revealed.
+   OPAQUE BARRIER:
+   Safari gets a fully painted layer between
+   the two independent faces.
 */
-.flash-card.mobile-separated .mobile-face-barrier{
+.mobile-card-stage .mobile-face-barrier{
 position:absolute !important;
 inset:0 !important;
-z-index:2 !important;
-pointer-events:none !important;
-display:block !important;
+z-index:5 !important;
 background:var(--green-dark) !important;
 border-radius:28px !important;
-opacity:0 !important;
-visibility:hidden !important;
-}
-
-.flash-card.mobile-separated.mobile-answer .card-front{
-display:none !important;
-visibility:hidden !important;
-opacity:0 !important;
+opacity:1 !important;
+visibility:visible !important;
 pointer-events:none !important;
-z-index:1 !important;
+transition:opacity .24s ease !important;
+will-change:opacity !important;
 }
 
-.flash-card.mobile-separated.mobile-answer .card-back{
-display:flex !important;
-pointer-events:auto !important;
-visibility:visible !important;
-opacity:1 !important;
-z-index:3 !important;
-}
-
-/* Keep the barrier painted during the face swap. */
-.flash-card.mobile-separated.mobile-answer .mobile-face-barrier{
-opacity:1 !important;
-visibility:visible !important;
-z-index:2 !important;
-}
-
-/* Once the answer is fully in place, remove only the visible shield. */
-.flash-card.mobile-separated.mobile-answer.mobile-barrier-clear .mobile-face-barrier{
+.mobile-card-stage.show-answer .mobile-card-front{
+transform:translateX(-105%) !important;
 opacity:0 !important;
 visibility:hidden !important;
+pointer-events:none !important;
 }
 
-.flash-card.mobile-separated.mobile-answer.focused .card-back{
-position:absolute !important;
-inset:0 !important;
-width:100% !important;
-height:100% !important;
-min-height:0 !important;
+.mobile-card-stage.show-answer .mobile-card-back{
+z-index:2 !important;
+visibility:visible !important;
+opacity:1 !important;
+transform:translateX(0) !important;
+pointer-events:auto !important;
+transition-delay:.18s !important;
 }
 
-.flash-card.mobile-separated.mobile-answer.focused .answer-content{
+.mobile-card-stage.show-answer .mobile-face-barrier{
+opacity:0 !important;
+visibility:hidden !important;
+transition-delay:.34s !important;
+}
+
+.mobile-card-stage .done-button{
+pointer-events:auto !important;
+z-index:99999 !important;
+}
+
+.mobile-card-stage .answer-content{
 width:100% !important;
 height:100% !important;
 min-height:0 !important;
 padding:20px 10px 72px !important;
 }
 
-.flash-card.mobile-separated .done-button{
-pointer-events:auto !important;
-z-index:99999 !important;
+/* After DONE, keep the completed answer on its original grid card. */
+.flash-card.mobile-answer:not(.mobile-stage-active) > .card-inner .card-front{
+display:none !important;
+visibility:hidden !important;
+}
+
+.flash-card.mobile-answer:not(.mobile-stage-active) > .card-inner .card-back{
+display:flex !important;
+visibility:visible !important;
+transform:none !important;
+-webkit-transform:none !important;
+backface-visibility:visible !important;
+-webkit-backface-visibility:visible !important;
 }
 
 .intro{
@@ -1078,6 +1106,75 @@ transform:translate(-50%,-50%) !important;
 padding:
 10px 14px;
 font-size:11px;
+}
+
+}
+
+
+/* ========================================
+   FOOTER
+======================================== */
+
+.site-footer{
+width:100%;
+margin-top:auto;
+padding:30px 6vw 32px;
+background:var(--green-dark);
+color:rgba(255,255,255,.78);
+border-top:1px solid rgba(255,255,255,.08);
+box-shadow:0 -8px 25px rgba(7,91,70,.08);
+}
+
+.footer-inner{
+width:100%;
+max-width:1200px;
+margin:0 auto;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+font-family:"Almarai",sans-serif;
+font-size:10px;
+font-weight:600;
+line-height:1.6;
+}
+
+.footer-brand{
+color:#f2a23a;
+font-size:12px;
+font-weight:800;
+letter-spacing:.25px;
+}
+
+.footer-center{
+color:rgba(255,255,255,.72);
+}
+
+.footer-right{
+color:rgba(255,255,255,.72);
+}
+
+@media(max-width:600px){
+
+.site-footer{
+margin-top:30px;
+padding:24px 7vw 26px;
+}
+
+.footer-inner{
+align-items:center;
+text-align:center;
+gap:7px;
+font-size:9px;
+}
+
+.footer-brand{
+font-size:11px;
+}
+
+.footer-center,
+.footer-right{
+text-align:center;
 }
 
 }
@@ -1365,6 +1462,14 @@ ReSet
 
 
 </section>
+
+<footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-brand">Saudi Geology Club</div>
+<div class="footer-center">Speaking Center</div>
+<div class="footer-right">© 2026 All Rights Reserved · Designed &amp; Developed by Retal Abdulmannan</div>
+</div>
+</footer>
 </main>
 <!-- ========================================
 JAVASCRIPT
@@ -1408,52 +1513,82 @@ localStorage.setItem(STATE_KEY,JSON.stringify(savedState));
 function prepareMobileCards(){
 if(!isMobile())return;
 
-cards.forEach(function(card){
-if(card.classList.contains("mobile-separated"))return;
+/*
+   Mobile keeps the original HTML untouched.
+   The two card faces are cloned into a separate
+   mobile-only stage when a card is opened.
+*/
+}
 
-const inner=card.querySelector(".card-inner");
-if(!inner)return;
+function createMobileStage(card){
+if(!card||!isMobile())return null;
 
-const front=inner.querySelector(".card-front");
-const back=inner.querySelector(".card-back");
+let stage=card.querySelector(".mobile-card-stage");
+if(stage)return stage;
 
-if(!front||!back)return;
+const front=card.querySelector(".card-front");
+const back=card.querySelector(".card-back");
 
-/* The two faces become real sibling layers on mobile. */
+if(!front||!back)return null;
+
+stage=document.createElement("div");
+stage.className="mobile-card-stage";
+
+const frontClone=front.cloneNode(true);
+frontClone.classList.add("mobile-card-front");
+
+const backClone=back.cloneNode(true);
+backClone.classList.add("mobile-card-back");
+
 const barrier=document.createElement("div");
 barrier.className="mobile-face-barrier";
 
-card.appendChild(front);
-card.appendChild(barrier);
-card.appendChild(back);
-inner.remove();
+stage.appendChild(frontClone);
+stage.appendChild(barrier);
+stage.appendChild(backClone);
 
-card.classList.add("mobile-separated");
-});
+card.appendChild(stage);
+card.classList.add("mobile-stage-active");
+
+return stage;
+}
+
+function destroyMobileStage(card){
+if(!card)return;
+
+const stage=card.querySelector(".mobile-card-stage");
+
+if(stage)stage.remove();
+
+card.classList.remove("mobile-stage-active");
 }
 
 function showMobileAnswer(card){
 if(!card)return;
 
 card.classList.remove("flipped");
-card.classList.add("mobile-separated");
 card.classList.add("mobile-answer");
-card.classList.remove("mobile-barrier-clear");
 
-/* Give Safari a real opaque paint layer before revealing the back face. */
+if(card.classList.contains("completed")){
+destroyMobileStage(card);
+return;
+}
+
+const stage=createMobileStage(card);
+
+if(stage){
 requestAnimationFrame(function(){
-requestAnimationFrame(function(){
-card.classList.add("mobile-barrier-clear");
+stage.classList.add("show-answer");
 });
-});
+}
 }
 
 function hideMobileAnswer(card){
 if(!card)return;
 
-card.classList.remove("mobile-answer","mobile-barrier-clear");
+destroyMobileStage(card);
+card.classList.remove("mobile-answer");
 }
-
 
 function openCard(card){
 if(card.classList.contains("completed"))return;
@@ -1461,7 +1596,8 @@ if(card.classList.contains("focused"))return;
 
 if(isMobile()){
 
-showMobileAnswer(card);
+card.classList.remove("mobile-answer");
+const stage=createMobileStage(card);
 
 saveCardState(card);
 
@@ -1469,6 +1605,14 @@ setTimeout(function(){
 card.classList.add("focused");
 document.querySelector(".focus-overlay").classList.add("active");
 document.body.style.overflow="hidden";
+
+if(stage){
+requestAnimationFrame(function(){
+stage.classList.add("show-answer");
+card.classList.add("mobile-answer");
+saveCardState(card);
+});
+}
 },100);
 
 return;
@@ -1497,6 +1641,21 @@ completedCards.push(index);
 }
 
 localStorage.setItem(STORAGE_KEY,JSON.stringify(completedCards));
+
+if(isMobile()){
+destroyMobileStage(card);
+card.classList.remove("focused");
+
+document.querySelector(".focus-overlay").classList.remove("active");
+document.body.style.overflow="";
+
+setTimeout(function(){
+card.classList.add("completed");
+saveCardState(card);
+},450);
+
+return;
+}
 
 card.classList.remove("focused");
 
@@ -1584,6 +1743,8 @@ savedState={};
 
 cards.forEach(function(card){
 
+destroyMobileStage(card);
+
 card.classList.remove(
 "completed",
 "focused",
@@ -1621,29 +1782,13 @@ window.location.href="../index.html";
 function restoreDesktopCards(){
 if(isMobile())return;
 
+/*
+   Mobile never changes the original DOM structure,
+   so there is nothing to rebuild when returning to desktop.
+*/
 cards.forEach(function(card){
-if(!card.classList.contains("mobile-separated"))return;
-
-const front=card.querySelector(".card-front");
-const back=card.querySelector(".card-back");
-const barrier=card.querySelector(".mobile-face-barrier");
-
-if(!front||!back)return;
-
-const inner=document.createElement("div");
-inner.className="card-inner";
-
-inner.appendChild(front);
-inner.appendChild(back);
-card.insertBefore(inner,card.firstChild);
-
-if(barrier)barrier.remove();
-
-card.classList.remove(
-"mobile-separated",
-"mobile-answer",
-"mobile-barrier-clear"
-);
+destroyMobileStage(card);
+card.classList.remove("mobile-stage-active","mobile-answer");
 });
 }
 
