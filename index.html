@@ -943,18 +943,19 @@ perspective:none !important;
 -webkit-perspective:none !important;
 }
 
-.card-inner{
-position:relative !important;
-width:100% !important;
-height:100% !important;
+/*
+   MOBILE USES TWO COMPLETELY SEPARATE CARD FACES.
+   There is NO 3D parent and NO overlapping front/back planes.
+*/
+
+.flash-card.mobile-separated .card-inner{
+display:contents !important;
 transform:none !important;
 -webkit-transform:none !important;
-transform-style:flat !important;
--webkit-transform-style:flat !important;
-transition:none !important;
 }
 
-.card-face{
+.flash-card.mobile-separated .card-front,
+.flash-card.mobile-separated .card-back{
 position:absolute !important;
 inset:0 !important;
 width:100% !important;
@@ -965,87 +966,75 @@ backface-visibility:visible !important;
 -webkit-backface-visibility:visible !important;
 }
 
-.card-front{
-display:block !important;
-position:absolute !important;
-inset:0 !important;
+.flash-card.mobile-separated .card-front{
+display:flex !important;
 z-index:2 !important;
 opacity:1 !important;
 visibility:visible !important;
-pointer-events:auto;
+pointer-events:auto !important;
 }
 
-.card-back{
+.flash-card.mobile-separated .card-back{
 display:none !important;
-position:absolute !important;
-inset:0 !important;
-z-index:1 !important;
-opacity:0 !important;
-visibility:hidden !important;
-pointer-events:none !important;
-transform:none !important;
--webkit-transform:none !important;
-}
-
-.flash-card.mobile-answer .card-front{
-display:none !important;
-z-index:1 !important;
-opacity:0 !important;
-visibility:hidden !important;
-pointer-events:none !important;
-}
-
-.flash-card.mobile-answer .card-back{
-display:flex !important;
-z-index:10 !important;
+z-index:3 !important;
 opacity:1 !important;
 visibility:visible !important;
+pointer-events:none !important;
+}
+
+/* The two faces are siblings, with a dedicated barrier layer between them. */
+.mobile-face-barrier{
+position:absolute;
+inset:0;
+z-index:10;
+pointer-events:none;
+display:none;
+}
+
+.flash-card.mobile-separated.mobile-answer .card-front{
+display:none !important;
+pointer-events:none !important;
+visibility:hidden !important;
+}
+
+.flash-card.mobile-separated.mobile-answer .card-back{
+display:flex !important;
 pointer-events:auto !important;
-transform:none !important;
--webkit-transform:none !important;
+visibility:visible !important;
+z-index:3 !important;
 }
 
-.flash-card.mobile-answer .card-inner{
-transform:none !important;
--webkit-transform:none !important;
+.flash-card.mobile-separated.mobile-answer .mobile-face-barrier{
+display:block !important;
+z-index:2 !important;
 }
 
-.flash-card.mobile-answer .done-button{
+.flash-card.mobile-separated .done-button{
 pointer-events:auto !important;
 z-index:99999 !important;
 }
-.mobile-answer-layer{
-display:flex !important;
-position:fixed !important;
-left:6vw !important;
-top:11vh !important;
-width:88vw !important;
-height:78vh !important;
-z-index:100000 !important;
-border-radius:28px;
-overflow:hidden;
-background:var(--green-dark);
-box-shadow:
-0 30px 80px rgba(0,0,0,.35),
-0 10px 30px rgba(7,91,70,.18);
+
+.intro{
+margin-bottom:30px;
 }
 
-.mobile-answer-layer .answer-content{
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-width:100%;
-height:100%;
-padding:40px;
-text-align:center;
-position:relative;
-z-index:2;
+.flash-card.focused{
+width:88vw;
+height:78vh;
 }
 
-.mobile-answer-layer .done-button{
-z-index:999999;
-pointer-events:auto !important;
+.flash-card.focused:hover{
+transform:
+translate(-50%,-50%) !important;
+}
+
+.back-btn,
+.reset-btn{
+padding:
+10px 14px;
+font-size:11px;
+}
+
 }
 
 .intro{
@@ -1395,42 +1384,47 @@ return cover.classList.contains("revealed");
 localStorage.setItem(STATE_KEY,JSON.stringify(savedState));
 }
 
+function prepareMobileCards(){
+if(!isMobile())return;
+
+cards.forEach(function(card){
+if(card.classList.contains("mobile-separated"))return;
+
+const inner=card.querySelector(".card-inner");
+if(!inner)return;
+
+const front=inner.querySelector(".card-front");
+const back=inner.querySelector(".card-back");
+
+if(!front||!back)return;
+
+const barrier=document.createElement("div");
+barrier.className="mobile-face-barrier";
+
+card.appendChild(front);
+card.appendChild(barrier);
+card.appendChild(back);
+inner.remove();
+
+card.classList.add("mobile-separated");
+}
+);
+}
+
 function showMobileAnswer(card){
 if(!card)return;
 
-let layer=document.querySelector('.mobile-answer-layer[data-card-index="'+card.dataset.index+'"]');
-
-if(!layer){
-layer=document.createElement("div");
-layer.className="mobile-answer-layer";
-layer.dataset.cardIndex=card.dataset.index;
-
-const source=card.querySelector(".card-back .answer-content");
-
-if(source){
-layer.appendChild(source.cloneNode(true));
-}
-
-document.body.appendChild(layer);
-}
-
 card.classList.remove("flipped");
+card.classList.add("mobile-separated");
 card.classList.add("mobile-answer");
-card.style.visibility="hidden";
 }
 
 function hideMobileAnswer(card){
 if(!card)return;
 
 card.classList.remove("mobile-answer");
-card.style.visibility="";
-
-const layer=document.querySelector('.mobile-answer-layer[data-card-index="'+card.dataset.index+'"]');
-
-if(layer){
-layer.remove();
 }
-}
+
 
 function openCard(card){
 if(card.classList.contains("completed"))return;
@@ -1481,7 +1475,6 @@ document.querySelector(".focus-overlay").classList.remove("active");
 document.body.style.overflow="";
 
 setTimeout(function(){
-hideMobileAnswer(card);
 card.classList.add("completed");
 saveCardState(card);
 },450);
@@ -1510,14 +1503,7 @@ if(!doneButton)return;
 event.preventDefault();
 event.stopImmediatePropagation();
 
-let card=doneButton.closest(".flash-card");
-
-if(!card&&doneButton.closest(".mobile-answer-layer")){
-const index=Number(doneButton.closest(".mobile-answer-layer").dataset.cardIndex);
-card=cards.find(function(item){
-return Number(item.dataset.index)===index;
-});
-}
+const card=doneButton.closest(".flash-card");
 
 if(card){
 completeCard(card);
@@ -1576,13 +1562,6 @@ card.classList.remove(
 "mobile-answer"
 );
 
-const mobileLayer=document.querySelector('.mobile-answer-layer[data-card-index="'+card.dataset.index+'"]');
-
-if(mobileLayer){
-mobileLayer.remove();
-}
-
-card.style.visibility="";
 
 card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap){
 wrap.classList.remove("revealed");
@@ -1708,6 +1687,7 @@ resetButton.addEventListener("click",resetCards);
 }
 
 
+prepareMobileCards();
 restoreCardStates();
 
 </script>
