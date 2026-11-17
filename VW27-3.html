@@ -172,7 +172,7 @@ max-width: var(--page-width);
 
 .top-controls {
 display: flex;
-justify-content: flex-end;
+justify-content: space-between;
 align-items: center;
 margin-bottom: 30px;
 }
@@ -200,6 +200,39 @@ transform: translateY(-3px);
 background: var(--green);
 }
 
+.back-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+padding:11px 20px;
+border:1px solid rgba(247,148,29,.35);
+border-radius:50px;
+background:var(--orange);
+color:var(--green-dark);
+box-shadow:0 8px 22px rgba(247,148,29,.22);
+cursor:pointer;
+text-decoration:none;
+font-family:"Almarai",sans-serif;
+font-size:12px;
+font-weight:800;
+transition:all .3s ease;
+}
+
+.back-btn:hover{
+transform:translateY(-3px);
+background:#ffb347;
+box-shadow:0 12px 28px rgba(247,148,29,.3);
+}
+
+.back-btn i{
+font-size:13px;
+transition:transform .3s ease;
+}
+
+.back-btn:hover i{
+transform:translateX(-4px);
+}
 .intro {
 margin-bottom: 45px;
 text-align: center;
@@ -768,10 +801,15 @@ animation-duration: .01ms !important;
 
 <main class="page">
 <div class="top-controls">
-<button class="reset-btn" id="resetButton" type="button">
-<i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
-Reset
+<button class="reset-btn" type="button" id="resetButton">
+<i class="fa-solid fa-rotate-right"></i>
+ReSet
 </button>
+
+<a href="index.html" class="back-btn">
+<i class="fa-solid fa-arrow-left"></i>
+Back
+</a>
 </div>
 
 <section class="intro">

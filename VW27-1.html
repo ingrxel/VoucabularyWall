@@ -48,7 +48,7 @@ font-family:"Almarai",sans-serif;
 
 
 /* ========================================
-   BACKGROUND
+BACKGROUND
 ======================================== */
 
 .background-design{
@@ -197,7 +197,7 @@ opacity:.45;
 
 
 /* ========================================
-   PAGE
+PAGE
 ======================================== */
 
 .page{
@@ -211,7 +211,7 @@ align-items:center;
 
 
 /* ========================================
-   TOP CONTROLS
+TOP CONTROLS
 ======================================== */
 
 .top-controls{
@@ -254,9 +254,42 @@ transform:translateY(-3px);
 background:var(--green);
 }
 
+.back-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+padding:11px 20px;
+border:1px solid rgba(247,148,29,.35);
+border-radius:50px;
+background:var(--orange);
+color:var(--green-dark);
+box-shadow:0 8px 22px rgba(247,148,29,.22);
+cursor:pointer;
+text-decoration:none;
+font-family:"Almarai",sans-serif;
+font-size:12px;
+font-weight:800;
+transition:all .3s ease;
+}
+
+.back-btn:hover{
+transform:translateY(-3px);
+background:#ffb347;
+box-shadow:0 12px 28px rgba(247,148,29,.3);
+}
+
+.back-btn i{
+font-size:13px;
+transition:transform .3s ease;
+}
+
+.back-btn:hover i{
+transform:translateX(-4px);
+}
 
 /* ========================================
-   INTRO
+INTRO
 ======================================== */
 
 .intro{
@@ -311,7 +344,7 @@ color:rgba(7,91,70,.62);
 
 
 /* ========================================
-   RESPONSIVE CARDS LAYOUT
+RESPONSIVE CARDS LAYOUT
 ======================================== */
 
 .cards-grid{
@@ -326,7 +359,7 @@ gap:24px;
 
 
 /* ========================================
-   FLASH CARD
+FLASH CARD
 ======================================== */
 
 .flash-card{
@@ -363,7 +396,7 @@ transform:rotateY(180deg);
 
 
 /* ========================================
-   CARD FACES
+CARD FACES
 ======================================== */
 
 .card-face{
@@ -382,7 +415,7 @@ box-shadow:
 
 
 /* ========================================
-   CARD FRONT
+CARD FRONT
 ======================================== */
 
 .card-front{
@@ -438,7 +471,7 @@ rgba(3,42,32,.68) 100%
 
 
 /* ========================================
-   CARD DECORATION
+CARD DECORATION
 ======================================== */
 
 .card-decoration,
@@ -498,7 +531,7 @@ transform:rotate(-20deg);
 
 
 /* ========================================
-   FRONT CONTENT
+FRONT CONTENT
 ======================================== */
 
 .front-content{
@@ -511,7 +544,7 @@ direction:ltr;
 }
 
 /* ========================================
-   CARD NUMBER
+CARD NUMBER
 ======================================== */
 
 .card-number{
@@ -536,7 +569,7 @@ box-shadow:
 }
 
 /* ========================================
-   FRONT SENTENCE
+FRONT SENTENCE
 ======================================== */
 
 .front-content h2{
@@ -572,7 +605,7 @@ text-shadow:
 
 
 /* ========================================
-   CARD ARROW
+CARD ARROW
 ======================================== */
 
 .card-arrow{
@@ -602,7 +635,7 @@ background:var(--orange);
 
 
 /* ========================================
-   CARD BACK
+CARD BACK
 ======================================== */
 
 .card-back{
@@ -648,7 +681,7 @@ rgba(3,42,32,.94)
 
 
 /* ========================================
-   ANSWER CONTENT
+ANSWER CONTENT
 ======================================== */
 
 .answer-content{
@@ -698,7 +731,7 @@ pointer-events:none;
 
 
 /* ========================================
-   DONE BUTTON
+DONE BUTTON
 ======================================== */
 
 .done-button{
@@ -748,7 +781,7 @@ translateY(0);
 
 
 /* ========================================
-   FOCUSED CARD
+FOCUSED CARD
 ======================================== */
 
 .flash-card.focused{
@@ -783,7 +816,7 @@ box-shadow:
 
 
 /* ========================================
-   FOCUS OVERLAY
+FOCUS OVERLAY
 ======================================== */
 
 .focus-overlay{
@@ -808,8 +841,14 @@ pointer-events:none;
 
 
 /* ========================================
-   COMPLETED CARD
+COMPLETED CARD
 ======================================== */
+.flash-card.completed .done-button{
+display:none !important;
+}
+.mobile-card-stage.mobile-completed-stage .done-button{
+display:none !important;
+}
 
 .flash-card.completed{
 cursor:default;
@@ -858,7 +897,7 @@ pointer-events:none;
 
 
 /* ========================================
-   POINTER EVENTS
+POINTER EVENTS
 ======================================== */
 
 .flash-card .card-image,
@@ -874,7 +913,7 @@ pointer-events:none;
 
 
 /* ========================================
-   TABLET
+TABLET
 ======================================== */
 
 @media(max-width:900px){
@@ -891,7 +930,7 @@ height:330px;
 
 
 /* ========================================
-   MOBILE
+MOBILE
 ======================================== */
 
 @media(max-width:600px){
@@ -924,9 +963,9 @@ perspective:none !important;
 }
 
 /* ========================================
-   MOBILE ONLY:
-   Safari-safe answer window.
-   No mobile 3D flip.
+MOBILE ONLY:
+Safari-safe answer window.
+No mobile 3D flip.
 ======================================== */
 
 .flash-card.mobile-stage-active > .card-inner{
@@ -1047,7 +1086,7 @@ font-size:11px;
 
 }
 /* ========================================
-   FOOTER
+FOOTER
 ======================================== */
 
 .site-footer{
@@ -1132,7 +1171,7 @@ font-size:8.5px;
 }
 
 /* ========================================
-   ANSWER COVER
+ANSWER COVER
 ======================================== */
 
 .answer-cover-wrap{
@@ -1212,6 +1251,7 @@ opacity:1;
 <div class="topographic-lines line6"></div>
 <div class="dots-pattern"></div>
 </div>
+
 <div class="focus-overlay" id="focusOverlay"></div>
 <main class="page">
 <div class="top-controls">
@@ -1219,6 +1259,11 @@ opacity:1;
 <i class="fa-solid fa-rotate-right"></i>
 ReSet
 </button>
+
+<a href="index.html" class="back-btn">
+<i class="fa-solid fa-arrow-left"></i>
+Back
+</a>
 </div>
 <section class="intro">
 <div class="intro-label">
@@ -1227,193 +1272,7 @@ ReSet
 <h1>Back On Track</h1>
 <p>expanding your vocabulary, and knowing how to make meaning of an unfamilar word by using the context given.</p>
 </section>
-<section class="cards-grid">
-
-<article class="flash-card" data-index="0">
-<div class="card-inner">
-
-<div class="card-face card-front">
-<div class="card-overlay"></div>
-
-<div class="card-decoration">
-<div class="geo-line one"></div>
-<div class="geo-line two"></div>
-<div class="geo-line three"></div>
-<div class="geo-line four"></div>
-<div class="geo-line five"></div>
-</div>
-
-<div class="front-content">
-<div class="card-number">01</div>
-<h2>The students are organizing their courses by EXTRAPOLATE what they’ve heard or experienced with different professors and timings, so it can match their preference.</h2>
-</div>
-
-<div class="card-arrow">
-<i class="fa-solid fa-arrow-left"></i>
-</div>
-</div>
-
-<div class="card-face card-back">
-<div class="back-overlay"></div>
-
-<div class="back-decoration">
-<div class="geo-line one"></div>
-<div class="geo-line two"></div>
-<div class="geo-line three"></div>
-<div class="geo-line four"></div>
-<div class="geo-line five"></div>
-</div>
-
-<div class="answer-content">
-<h3>Extrapolate</h3>
-<p>To form an opinion based on past experiences or known facts.</p>
-<button type="button" class="done-button">DONE</button>
-</div>
-
-</div>
-</div>
-</article>
-
-
-<article class="flash-card" data-index="1">
-<div class="card-inner">
-
-<div class="card-face card-front">
-<div class="card-overlay"></div>
-
-<div class="card-decoration">
-<div class="geo-line one"></div>
-<div class="geo-line two"></div>
-<div class="geo-line three"></div>
-<div class="geo-line four"></div>
-<div class="geo-line five"></div>
-</div>
-
-<div class="front-content">
-<div class="card-number">02</div>
-<h2>Students are advised to REVAMP their schedule to fit within their academic routine.</h2>
-</div>
-
-<div class="card-arrow">
-<i class="fa-solid fa-arrow-left"></i>
-</div>
-</div>
-
-<div class="card-face card-back">
-<div class="back-overlay"></div>
-
-<div class="back-decoration">
-<div class="geo-line one"></div>
-<div class="geo-line two"></div>
-<div class="geo-line three"></div>
-<div class="geo-line four"></div>
-<div class="geo-line five"></div>
-</div>
-
-<div class="answer-content">
-<h3>Revamp</h3>
-<p>To modify or to change.</p>
-<button type="button" class="done-button">DONE</button>
-</div>
-
-</div>
-</div>
-</article>
-
-
-<article class="flash-card" data-index="2">
-<div class="card-inner">
-
-<div class="card-face card-front">
-<div class="card-overlay"></div>
-
-<div class="card-decoration">
-<div class="geo-line one"></div>
-<div class="geo-line two"></div>
-<div class="geo-line three"></div>
-<div class="geo-line four"></div>
-<div class="geo-line five"></div>
-</div>
-
-<div class="front-content">
-<div class="card-number">03</div>
-<h2>It is common for students to expect UNFORESEEN changes in their schedule within the first week into the year.</h2>
-</div>
-
-<div class="card-arrow">
-<i class="fa-solid fa-arrow-left"></i>
-</div>
-</div>
-
-<div class="card-face card-back">
-<div class="back-overlay"></div>
-
-<div class="back-decoration">
-<div class="geo-line one"></div>
-<div class="geo-line two"></div>
-<div class="geo-line three"></div>
-<div class="geo-line four"></div>
-<div class="geo-line five"></div>
-</div>
-
-<div class="answer-content">
-<h3>Unforeseen</h3>
-<p>Not expected.</p>
-<button type="button" class="done-button">DONE</button>
-</div>
-
-</div>
-</div>
-</article>
-
-
-<article class="flash-card" data-index="3">
-<div class="card-inner">
-
-<div class="card-face card-front">
-<div class="card-overlay"></div>
-
-<div class="card-decoration">
-<div class="geo-line one"></div>
-<div class="geo-line two"></div>
-<div class="geo-line three"></div>
-<div class="geo-line four"></div>
-<div class="geo-line five"></div>
-</div>
-
-<div class="front-content">
-<div class="card-number">04</div>
-<h2>After spending a month on campus, I’m starting to HARMONIZE with the environment more.</h2>
-</div>
-
-<div class="card-arrow">
-<i class="fa-solid fa-arrow-left"></i>
-</div>
-</div>
-
-<div class="card-face card-back">
-<div class="back-overlay"></div>
-
-<div class="back-decoration">
-<div class="geo-line one"></div>
-<div class="geo-line two"></div>
-<div class="geo-line three"></div>
-<div class="geo-line four"></div>
-<div class="geo-line five"></div>
-</div>
-
-<div class="answer-content">
-<h3>Harmonize</h3>
-<p>To form a comfortable and pleasing relationship.</p>
-<button type="button" class="done-button">DONE</button>
-</div>
-
-</div>
-</div>
-</article>
-
-
-</section>
+<section class="cards-grid" id="cardsGrid" aria-label="Vocabulary flash cards"></section>
 
 <footer class="site-footer">
 <div class="footer-inner">
@@ -1428,440 +1287,304 @@ ReSet
 JAVASCRIPT
 ======================================== -->
 <script>
-const STORAGE_KEY="cards3CompletedCards";
-const STATE_KEY="cards3State";
-const cards=[...document.querySelectorAll(".flash-card")];
+"use strict";
 
-let completedCards=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];
-let savedState=JSON.parse(localStorage.getItem(STATE_KEY))||{};
+/* =========================================
+1. EDIT ALL CARD CONTENT HERE
+Add, remove, or edit cards in this array.
+========================================= */
+const CARDS = [
+{
+question: "The students are organizing their courses by EXTRAPOLATE what they’ve heard or experienced with different professors and timings, so it can match their preference.",
+word: "Extrapolate",
+meaning: "To form an opinion based on past experiences or known facts."
+},
+{
+question: "Students are advised to REVAMP their schedule to fit within their academic routine.",
+word: "Revamp",
+meaning: "To modify or to change."
+},
+{
+question: "It is common for students to expect UNFORESEEN changes in their schedule within the first week into the year.",
+word: "Unforeseen",
+meaning: "Not expected."
+},
+{
+question: "After spending a month on campus, I’m starting to HARMONIZE with the environment more.",
+word: "Harmonize",
+meaning: "To form a comfortable and pleasing relationship."
+}
+];
 
-function isMobile(){
-return window.innerWidth<=600;
+/* =========================================
+2. ELEMENTS & SAVED PROGRESS
+========================================= */
+const STORAGE_KEY = "cards3CompletedCards";
+const STATE_KEY = "cards3State";
+const cardsGrid = document.getElementById("cardsGrid");
+const focusOverlay = document.getElementById("focusOverlay");
+const resetButton = document.getElementById("resetButton");
+
+function isMobile() {
+return window.matchMedia("(max-width: 600px)").matches;
 }
 
-function saveCardState(card){
-const index=Number(card.dataset.index);
+function readJSON(key, fallback) {
+try {
+const value = JSON.parse(localStorage.getItem(key));
+return value ?? fallback;
+} catch (error) {
+return fallback;
+}
+}
 
-savedState[index]={
-flipped:isMobile()?false:card.classList.contains("flipped"),
-mobileAnswer:isMobile()?card.classList.contains("mobile-answer"):false,
-completed:card.classList.contains("completed"),
+let completedCards = readJSON(STORAGE_KEY, []);
+if (!Array.isArray(completedCards)) completedCards = [];
+completedCards = completedCards.filter(index => Number.isInteger(index) && index >= 0 && index < CARDS.length);
+let savedState = readJSON(STATE_KEY, {});
+if (!savedState || typeof savedState !== "object" || Array.isArray(savedState)) savedState = {};
+let activeCard = null;
 
-revealed:[...card.querySelectorAll(".answer-cover-wrap")].map(function(wrap){
-return wrap.classList.contains("revealed");
-}),
+function saveProgress() {
+try {
+localStorage.setItem(STORAGE_KEY, JSON.stringify(completedCards));
+localStorage.setItem(STATE_KEY, JSON.stringify(savedState));
+} catch (error) {
+// The activity still works if browser storage is unavailable.
+}
+}
 
-questionRevealed:[...card.querySelectorAll(".question-second-cover")].map(function(wrap){
-return wrap.classList.contains("revealed");
-}),
-
-covers:[...card.querySelectorAll(".answer-cover")].map(function(cover){
-return cover.classList.contains("revealed");
-})
+function saveCardState(card) {
+if (!card) return;
+const index = Number(card.dataset.index);
+savedState[index] = {
+flipped: card.classList.contains("flipped"),
+completed: card.classList.contains("completed")
 };
-
-localStorage.setItem(STATE_KEY,JSON.stringify(savedState));
+saveProgress();
 }
 
-function prepareMobileCards(){
-if(!isMobile())return;
+/* =========================================
+3. BUILD CARDS FROM THE CARDS ARRAY
+========================================= */
+function createCard(cardData, index) {
+const card = document.createElement("article");
+card.className = "flash-card";
+card.dataset.index = String(index);
+card.innerHTML = `
+<div class="card-inner">
+<div class="card-face card-front">
+<div class="card-overlay"></div>
+<div class="card-decoration" aria-hidden="true">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+<div class="front-content">
+<div class="card-number">${String(index + 1).padStart(2, "0")}</div>
+<h2 class="card-question"></h2>
+</div>
+<div class="card-arrow" aria-hidden="true">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+</div>
+<div class="card-face card-back">
+<div class="back-overlay"></div>
+<div class="back-decoration" aria-hidden="true">
+<div class="geo-line one"></div>
+<div class="geo-line two"></div>
+<div class="geo-line three"></div>
+<div class="geo-line four"></div>
+<div class="geo-line five"></div>
+</div>
+<div class="answer-content">
+<h3 class="answer-word"></h3>
+<p class="answer-meaning"></p>
+<button type="button" class="done-button">DONE</button>
+</div>
+</div>
+</div>`;
 
-/*
-   Mobile keeps the original HTML untouched.
-   The two card faces are cloned into a separate
-   mobile-only stage when a card is opened.
-*/
+// Insert user-editable text safely without interpreting it as HTML.
+card.querySelector(".card-question").textContent = cardData.question;
+card.querySelector(".answer-word").textContent = cardData.word;
+card.querySelector(".answer-meaning").textContent = cardData.meaning;
+
+if (completedCards.includes(index)) card.classList.add("completed", "flipped");
+return card;
 }
 
-function createMobileStage(card){
-if(!card||!isMobile())return null;
+function renderCards() {
+const fragment = document.createDocumentFragment();
+CARDS.forEach((cardData, index) => fragment.appendChild(createCard(cardData, index)));
+cardsGrid.replaceChildren(fragment);
+}
 
-let stage=card.querySelector(".mobile-card-stage");
-if(stage)return stage;
 
-const front=card.querySelector(".card-front");
-const back=card.querySelector(".card-back");
+/* =========================================
+4. MOBILE ANSWER STAGE
+The cloned stage is placed under body, so DONE
+locates its original card using data-card-index.
+========================================= */
+function getMobileStage(index) {
+return document.querySelector(`.mobile-card-stage[data-card-index="${index}"]`);
+}
 
-if(!front||!back)return null;
+function createMobileStage(card) {
+if (!card || !isMobile()) return null;
+let stage = getMobileStage(card.dataset.index);
+if (stage) return stage;
 
-stage=document.createElement("div");
-stage.className="mobile-card-stage";
-stage.dataset.cardIndex=card.dataset.index;
+const front = card.querySelector(".card-front");
+const back = card.querySelector(".card-back");
+if (!front || !back) return null;
 
-const frontClone=front.cloneNode(true);
+stage = document.createElement("div");
+stage.className = "mobile-card-stage";
+stage.dataset.cardIndex = card.dataset.index;
+
+const frontClone = front.cloneNode(true);
 frontClone.classList.add("mobile-card-front");
-
-const backClone=back.cloneNode(true);
+const backClone = back.cloneNode(true);
 backClone.classList.add("mobile-card-back");
+backClone.style.transform = "none";
+backClone.style.webkitTransform = "none";
 
-/*
-   Mobile Safari does not use the card's 3D backface at all.
-   The answer is a normal, independent layer positioned exactly
-   over the card.
-*/
-backClone.style.transform="none";
-backClone.style.webkitTransform="none";
-
-stage.appendChild(frontClone);
-stage.appendChild(backClone);
-
-/* Keep the answer window outside the card stacking context. */
+stage.append(frontClone, backClone);
 document.body.appendChild(stage);
 card.classList.add("mobile-stage-active");
-
 return stage;
 }
 
-function destroyMobileStage(card){
-if(!card)return;
-
-let stage=card.querySelector(".mobile-card-stage");
-if(!stage){
-stage=document.querySelector('.mobile-card-stage[data-card-index="'+card.dataset.index+'"]');
+function destroyMobileStage(card) {
+if (!card) return;
+const stage = getMobileStage(card.dataset.index);
+if (stage) stage.remove();
+card.classList.remove("mobile-stage-active", "mobile-answer");
 }
 
-if(stage)stage.remove();
-
-card.classList.remove("mobile-stage-active");
-}
-
-function showMobileAnswer(card){
-if(!card)return;
-
-card.classList.remove("flipped");
-card.classList.add("mobile-answer");
-
-if(card.classList.contains("completed")){
-destroyMobileStage(card);
-return;
-}
-
-const stage=createMobileStage(card);
-
-if(stage){
-requestAnimationFrame(function(){
-stage.classList.add("show-answer");
-});
-}
-}
-
-function hideMobileAnswer(card){
-if(!card)return;
-
-destroyMobileStage(card);
-card.classList.remove("mobile-answer");
-}
-
-function openCard(card){
-if(card.classList.contains("completed"))return;
-if(card.classList.contains("focused"))return;
-
-if(isMobile()){
-
-card.classList.remove("mobile-answer");
-const stage=createMobileStage(card);
-
-saveCardState(card);
-
-setTimeout(function(){
+/* =========================================
+5. OPEN CARD
+========================================= */
+function openCard(card) {
+if (!card || card.classList.contains("completed") || card.classList.contains("focused")) return;
+if (activeCard) return;
+activeCard = card;
 card.classList.add("focused");
-document.querySelector(".focus-overlay").classList.add("active");
-document.body.style.overflow="hidden";
+focusOverlay.classList.add("active");
+document.body.style.overflow = "hidden";
 
-if(stage){
-requestAnimationFrame(function(){
-stage.classList.add("show-answer");
+if (isMobile()) {
+const stage = createMobileStage(card);
+if (stage) requestAnimationFrame(() => stage.classList.add("show-answer"));
 card.classList.add("mobile-answer");
+} else {
+card.classList.add("flipped");
+}
 saveCardState(card);
-});
-}
-},100);
-
-return;
 }
 
-hideMobileAnswer(card);
+/* =========================================
+6. DONE
+========================================= */
+function completeCard(card) {
+if (!card || card.classList.contains("completed")) return;
+const index = Number(card.dataset.index);
+if (!Number.isInteger(index)) return;
+
+if (!completedCards.includes(index)) completedCards.push(index);
+card.classList.add("completed");
+card.classList.remove("focused");
 card.classList.add("flipped");
 
-saveCardState(card);
-
-setTimeout(function(){
-card.classList.add("focused");
-document.querySelector(".focus-overlay").classList.add("active");
-document.body.style.overflow="hidden";
-},100);
-}
-
-function completeCard(card){
-if(!card)return;
-if(card.classList.contains("completed"))return;
-
-const index=Number(card.dataset.index);
-
-if(!completedCards.includes(index)){
-completedCards.push(index);
-}
-
-localStorage.setItem(STORAGE_KEY,JSON.stringify(completedCards));
-
-if(isMobile()){
-const stage=card.querySelector(".mobile-card-stage");
-
-card.classList.remove("focused");
-document.querySelector(".focus-overlay").classList.remove("active");
-document.body.style.overflow="";
-
-if(stage){
+if (isMobile()) {
+// The stage is outside the card while open; retrieve it by its index.
+const stage = getMobileStage(index);
+if (stage) {
 stage.classList.remove("show-answer");
 stage.classList.add("mobile-completed-stage");
 card.appendChild(stage);
-requestAnimationFrame(function(){
-stage.classList.add("show-answer");
-});
+requestAnimationFrame(() => stage.classList.add("show-answer"));
 }
-
-card.classList.add("completed");
 card.classList.add("mobile-answer");
-saveCardState(card);
-return;
 }
 
-card.classList.remove("focused");
-
-document.querySelector(".focus-overlay").classList.remove("active");
-document.body.style.overflow="";
-
-setTimeout(function(){
-card.classList.add("completed");
+activeCard = null;
+focusOverlay.classList.remove("active");
+document.body.style.overflow = "";
 saveCardState(card);
-},450);
 }
 
-cards.forEach(function(card){
-
-card.addEventListener("click",function(event){
-
-if(event.target.closest(".done-button"))return;
-if(event.target.closest(".answer-cover"))return;
-
-openCard(card);
-
+/* =========================================
+7. EVENTS
+========================================= */
+cardsGrid.addEventListener("click", event => {
+const doneButton = event.target.closest(".done-button");
+if (doneButton) return; // Handled by the document listener below.
+const card = event.target.closest(".flash-card");
+if (card) openCard(card);
 });
 
-});
-
-
-document.addEventListener("click",function(event){
-
-const doneButton=event.target.closest(".done-button");
-
-if(!doneButton)return;
-
+// Capture works for both original buttons and buttons inside the mobile clone.
+document.addEventListener("click", event => {
+const doneButton = event.target.closest(".done-button");
+if (!doneButton) return;
 event.preventDefault();
-event.stopImmediatePropagation();
+event.stopPropagation();
 
-const card=doneButton.closest(".flash-card");
-
-if(card){
-completeCard(card);
+let card = doneButton.closest(".flash-card");
+if (!card) {
+const stage = doneButton.closest(".mobile-card-stage");
+if (stage) card = cardsGrid.querySelector(`.flash-card[data-index="${stage.dataset.cardIndex}"]`);
 }
+if (card) completeCard(card);
+}, true);
 
-},true);
-
-
-document.addEventListener("click",function(event){
-
-const answerCover=event.target.closest(".answer-cover");
-
-if(!answerCover)return;
-
-event.preventDefault();
-event.stopImmediatePropagation();
-
-if(answerCover.classList.contains("revealed"))return;
-
-const wrap=answerCover.closest(".answer-cover-wrap");
-const questionSecond=answerCover.closest(".question-second-cover");
-
-if(wrap){
-wrap.classList.add("revealed");
-}
-
-if(questionSecond&&answerCover.classList.contains("question-cover")){
-questionSecond.classList.add("revealed");
-}
-
-answerCover.classList.add("revealed");
-
-const card=answerCover.closest(".flash-card");
-
-if(card){
-saveCardState(card);
-}
-
-},true);
-
-
-function resetCards(){
-
+/* =========================================
+8. RESET & RESTORE
+========================================= */
+function resetCards() {
+completedCards = [];
+savedState = {};
+activeCard = null;
+try {
 localStorage.removeItem(STORAGE_KEY);
 localStorage.removeItem(STATE_KEY);
+} catch (error) {}
 
-completedCards=[];
-savedState={};
-
-cards.forEach(function(card){
-
+cardsGrid.querySelectorAll(".flash-card").forEach(card => {
 destroyMobileStage(card);
-
-card.classList.remove(
-"completed",
-"focused",
-"flipped",
-"mobile-answer"
-);
-
-
-card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap){
-wrap.classList.remove("revealed");
+card.classList.remove("completed", "focused", "flipped", "mobile-answer");
 });
-
-card.querySelectorAll(".question-second-cover").forEach(function(wrap){
-wrap.classList.remove("revealed");
-});
-
-card.querySelectorAll(".answer-cover").forEach(function(cover){
-cover.classList.remove("revealed");
-});
-
-});
-
-document.querySelector(".focus-overlay").classList.remove("active");
-document.body.style.overflow="";
-
+focusOverlay.classList.remove("active");
+document.body.style.overflow = "";
 }
 
-
-function restoreDesktopCards(){
-if(isMobile())return;
-
-/*
-   Mobile never changes the original DOM structure,
-   so there is nothing to rebuild when returning to desktop.
-*/
-cards.forEach(function(card){
-destroyMobileStage(card);
-card.classList.remove("mobile-stage-active","mobile-answer");
-});
-}
-
-function restoreCardStates(){
-
-cards.forEach(function(card){
-
-const index=Number(card.dataset.index);
-const state=savedState[index];
-
-if(state){
-
-if(isMobile()){
-
-/* Mobile never uses the desktop 3D flip state. */
-card.classList.remove("flipped");
-
-if(state.mobileAnswer){
-showMobileAnswer(card);
-}else{
-hideMobileAnswer(card);
-}
-
-}else{
-
-/* Desktop uses the 3D flip state only. */
-card.classList.remove("mobile-answer");
-
-if(state.flipped){
+function restoreCardStates() {
+cardsGrid.querySelectorAll(".flash-card").forEach(card => {
+const index = Number(card.dataset.index);
+const state = savedState[index] || {};
+if (completedCards.includes(index) || state.completed) {
+card.classList.add("completed", "flipped");
+if (!completedCards.includes(index)) completedCards.push(index);
+} else if (!isMobile() && state.flipped) {
 card.classList.add("flipped");
-}else{
-card.classList.remove("flipped");
+}
+});
+saveProgress();
 }
 
+resetButton.addEventListener("click", resetCards);
+window.addEventListener("resize", () => {
+if (!isMobile()) {
+cardsGrid.querySelectorAll(".flash-card").forEach(card => destroyMobileStage(card));
 }
-
-
-card.querySelectorAll(".answer-cover-wrap").forEach(function(wrap,i){
-
-if(state.revealed&&state.revealed[i]){
-wrap.classList.add("revealed");
-}
-
 });
 
-
-card.querySelectorAll(".question-second-cover").forEach(function(wrap,i){
-
-if(state.questionRevealed&&state.questionRevealed[i]){
-wrap.classList.add("revealed");
-}
-
-});
-
-
-card.querySelectorAll(".answer-cover").forEach(function(cover,i){
-
-if(state.covers&&state.covers[i]){
-cover.classList.add("revealed");
-}
-
-});
-
-}
-
-
-if(completedCards.includes(index)){
-
-card.classList.add("completed");
-
-if(isMobile()){
-
-showMobileAnswer(card);
-
-}else{
-
-card.classList.remove("mobile-answer");
-card.classList.add("flipped");
-
-}
-
-}
-
-});
-
-}
-
-
-const resetButton=document.querySelector(".reset-btn");
-
-if(resetButton){
-resetButton.addEventListener("click",resetCards);
-}
-
-
-function handleViewportChange(){
-if(isMobile()){
-prepareMobileCards();
-}else{
-restoreDesktopCards();
-}
-
+renderCards();
 restoreCardStates();
-}
-
-window.addEventListener("resize",handleViewportChange);
-
-prepareMobileCards();
-restoreCardStates();
-
 </script>
 </body>
 </html>
