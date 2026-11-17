@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Vocabulary WALL</title>
+<title>Vocabulary WALL | Back On Track</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -223,7 +223,6 @@ justify-content:space-between;
 margin-bottom:30px;
 }
 
-.back-btn,
 .reset-btn{
 border:none;
 cursor:pointer;
@@ -240,14 +239,6 @@ background .3s ease,
 box-shadow .3s ease;
 }
 
-.back-btn{
-background:rgba(255,255,255,.75);
-color:var(--green-dark);
-border:1px solid rgba(7,91,70,.1);
-box-shadow:
-0 6px 20px rgba(7,91,70,.05);
-}
-
 .reset-btn{
 background:var(--green-dark);
 color:white;
@@ -255,13 +246,8 @@ box-shadow:
 0 8px 22px rgba(7,91,70,.15);
 }
 
-.back-btn:hover,
 .reset-btn:hover{
 transform:translateY(-3px);
-}
-
-.back-btn:hover{
-background:white;
 }
 
 .reset-btn:hover{
@@ -325,14 +311,16 @@ color:rgba(7,91,70,.62);
 
 
 /* ========================================
-   CARDS GRID
+   RESPONSIVE CARDS LAYOUT
 ======================================== */
 
 .cards-grid{
 width:100%;
 max-width:1200px;
-display:grid;
-grid-template-columns:repeat(4,1fr);
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-items:stretch;
 gap:24px;
 }
 
@@ -343,6 +331,9 @@ gap:24px;
 
 .flash-card{
 position:relative;
+flex:1 1 260px;
+min-width:240px;
+max-width:350px;
 height:350px;
 perspective:1400px;
 cursor:pointer;
@@ -715,7 +706,7 @@ position:absolute;
 bottom:25px;
 left:50%;
 transform:translateX(-50%);
-z-index:9999;
+z-index:99999;
 display:block;
 width:auto;
 min-width:120px;
@@ -789,10 +780,6 @@ box-shadow:
 0 10px 30px rgba(7,91,70,.18);
 }
 
-.flash-card.focused .done-button{
-z-index:99999;
-pointer-events:auto !important;
-}
 
 
 /* ========================================
@@ -832,9 +819,6 @@ transition:
 opacity .35s ease;
 }
 
-.flash-card.completed:hover{
-transform:none !important;
-}
 
 .flash-card.completed .card-image{
 filter:
@@ -886,15 +870,7 @@ pointer-events:none;
 pointer-events:none;
 }
 
-.flash-card .answer-content{
-pointer-events:auto;
-z-index:5;
-}
 
-.flash-card .done-button{
-pointer-events:auto !important;
-z-index:99999 !important;
-}
 
 
 /* ========================================
@@ -904,7 +880,6 @@ z-index:99999 !important;
 @media(max-width:900px){
 
 .cards-grid{
-grid-template-columns:repeat(2,1fr);
 gap:20px;
 }
 
@@ -935,11 +910,14 @@ z-index:3000;
 }
 
 .cards-grid{
-grid-template-columns:1fr;
 gap:18px;
 }
 
 .flash-card{
+width:100%;
+max-width:380px;
+min-width:0;
+flex:1 1 100%;
 height:340px;
 perspective:none !important;
 -webkit-perspective:none !important;
@@ -1062,10 +1040,8 @@ transition:transform .45s ease, opacity .45s ease !important;
 transform:translate(-50%,-50%) !important;
 }
 
-.back-btn,
 .reset-btn{
-padding:
-10px 14px;
+padding:10px 14px;
 font-size:11px;
 }
 
@@ -1128,9 +1104,6 @@ font-size:9px;
 @media(max-width:600px){
 
 .site-footer{
-width:100vw;
-margin-left:calc(50% - 50vw);
-margin-right:calc(50% - 50vw);
 margin-top:65px;
 padding:24px 5vw 26px;
 }
@@ -1252,7 +1225,7 @@ ReSet
 <i class="fa-solid fa-mountain"></i>Vocbulary Wall
 </div>
 <h1>Back On Track</h1>
-<p>expanding your vocabulary, and knowing how to make meaning of an unfamilar word by using the contect given.</p>
+<p>expanding your vocabulary, and knowing how to make meaning of an unfamilar word by using the context given.</p>
 </section>
 <section class="cards-grid">
 
@@ -1272,7 +1245,7 @@ ReSet
 
 <div class="front-content">
 <div class="card-number">01</div>
-<h2>The students are organizing their courses by extrapolating what they’ve heard or experienced with different professors and timings, so it can match their preference.</h2>
+<h2>The students are organizing their courses by EXTRAPOLATE what they’ve heard or experienced with different professors and timings, so it can match their preference.</h2>
 </div>
 
 <div class="card-arrow">
@@ -1318,7 +1291,7 @@ ReSet
 
 <div class="front-content">
 <div class="card-number">02</div>
-<h2>Students are advised to revamp their schedule to fit within their academic routine.</h2>
+<h2>Students are advised to REVAMP their schedule to fit within their academic routine.</h2>
 </div>
 
 <div class="card-arrow">
@@ -1364,7 +1337,7 @@ ReSet
 
 <div class="front-content">
 <div class="card-number">03</div>
-<h2>It is common for students to expect unforeseen changes in their schedule within the first week into the year.</h2>
+<h2>It is common for students to expect UNFORESEEN changes in their schedule within the first week into the year.</h2>
 </div>
 
 <div class="card-arrow">
@@ -1410,7 +1383,7 @@ ReSet
 
 <div class="front-content">
 <div class="card-number">04</div>
-<h2>After spending a month on campus, I’m starting to harmonize with the environment more.</h2>
+<h2>After spending a month on campus, I’m starting to HARMONIZE with the environment more.</h2>
 </div>
 
 <div class="card-arrow">
@@ -1769,11 +1742,6 @@ document.body.style.overflow="";
 }
 
 
-function goBack(){
-window.location.href="../index.html";
-}
-
-
 function restoreDesktopCards(){
 if(isMobile())return;
 
@@ -1872,14 +1840,7 @@ card.classList.add("flipped");
 }
 
 
-const backButton=document.querySelector(".back-btn");
 const resetButton=document.querySelector(".reset-btn");
-
-
-if(backButton){
-backButton.addEventListener("click",goBack);
-}
-
 
 if(resetButton){
 resetButton.addEventListener("click",resetCards);
